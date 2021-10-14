@@ -1,0 +1,6 @@
+- Allow custom classes for a node
+- Allow custom meta for a node
+- Allow a lambda for building a tag/render
+- Use middleman syntax for code
+- Handle whether a tag adds a newline
+- What if not self closing?
