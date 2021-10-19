@@ -77,10 +77,50 @@ RSpec.describe MiddlemanDatoDast::Configuration do
     end
   end
 
+  describe "#nodes" do
+    it "returns the defaults" do
+      defaults = {
+        "blockquote" => MiddlemanDatoDast::Nodes::AttributedQuote,
+        "code" => MiddlemanDatoDast::Nodes::Code,
+        "heading" => MiddlemanDatoDast::Nodes::Heading,
+        "link" => MiddlemanDatoDast::Nodes::Link,
+        "list" => MiddlemanDatoDast::Nodes::List,
+        "listItem" => MiddlemanDatoDast::Nodes::ListItem,
+        "paragraph" => MiddlemanDatoDast::Nodes::Paragraph,
+        "root" => MiddlemanDatoDast::Nodes::Root,
+        "span" => MiddlemanDatoDast::Nodes::Span,
+        "thematicBreak" => MiddlemanDatoDast::Nodes::ThematicBreak,
+      }
+
+      expect(config.nodes).to eq(defaults)
+    end
+
+    it "merges in new values" do
+      new_nodes = {
+        "blockquote" => MiddlemanDatoDast::Nodes::Blockquote,
+      }
+      expected_nodes = {
+        "blockquote" => MiddlemanDatoDast::Nodes::Blockquote,
+        "code" => MiddlemanDatoDast::Nodes::Code,
+        "heading" => MiddlemanDatoDast::Nodes::Heading,
+        "link" => MiddlemanDatoDast::Nodes::Link,
+        "list" => MiddlemanDatoDast::Nodes::List,
+        "listItem" => MiddlemanDatoDast::Nodes::ListItem,
+        "paragraph" => MiddlemanDatoDast::Nodes::Paragraph,
+        "root" => MiddlemanDatoDast::Nodes::Root,
+        "span" => MiddlemanDatoDast::Nodes::Span,
+        "thematicBreak" => MiddlemanDatoDast::Nodes::ThematicBreak,
+      }
+
+      config.nodes = new_nodes
+
+      expect(config.nodes).to eq(expected_nodes)
+    end
+  end
+
   describe "#wrapper_tags" do
     it "returns the defaults" do
       defaults = {
-        "blockquote" => "figure",
         "code" => "pre",
       }
 
@@ -92,7 +132,6 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "paragraph" => "section",
       }
       expected_tags = {
-        "blockquote" => "figure",
         "paragraph" => "section",
         "code" => "pre",
       }
@@ -100,55 +139,6 @@ RSpec.describe MiddlemanDatoDast::Configuration do
       config.wrapper_tags = new_tags
 
       expect(config.wrapper_tags).to eq(expected_tags)
-    end
-  end
-
-  describe "#other_tags" do
-    it "returns the defaults" do
-      defaults = {
-        "attribution" => "figcaption",
-      }
-
-      expect(config.other_tags).to eq(defaults)
-    end
-
-    it "merges in new values" do
-      new_tags = {
-        "attribution" => "cite",
-      }
-
-      config.other_tags = new_tags
-
-      expect(config.other_tags).to eq(new_tags)
-    end
-  end
-
-  describe "#whitespace" do
-    it "returns the defaults" do
-      defaults = {
-        "blockquote" => true,
-        "code" => true,
-        "heading" => true,
-        "link" => true,
-        "list" => true,
-        "listItem" => true,
-        "paragraph" => true,
-        "root" => true,
-        "span" => false,
-        "thematicBreak" => true,
-      }
-
-      expect(config.whitespace).to eq(defaults)
-    end
-
-    it "merges in new values" do
-      new_tags = {
-        "attribution" => "cite",
-      }
-
-      config.other_tags = new_tags
-
-      expect(config.other_tags).to eq(new_tags)
     end
   end
 end

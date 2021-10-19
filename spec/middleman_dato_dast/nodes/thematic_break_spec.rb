@@ -19,9 +19,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::ThematicBreak do
     end
   end
 
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(thematic_break.wrapper_tag).to eq(nil)
+      expect(thematic_break.wrapper_tags).to be_empty
     end
   end
 

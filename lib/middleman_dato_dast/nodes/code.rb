@@ -2,8 +2,6 @@ module MiddlemanDatoDast
   module Nodes
     class Code < Base
       def language
-        # TODO: Use this
-
         @node["language"]
       end
 
@@ -11,13 +9,8 @@ module MiddlemanDatoDast
         @node["code"].gsub(/\n/, "<br/>")
       end
 
-      def render
-        <<~HTML.strip
-          <#{wrapper_tag}>
-            <#{tag}>#{code}</#{tag}>
-          </#{wrapper_tag}>
-        HTML
-
+      def render_value
+        code
       end
     end
   end

@@ -27,15 +27,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::Span do
     end
   end
 
-  describe "#mark_tags" do
-    it "returns ['mark', 'em']" do
-      expect(span.mark_tags).to contain_exactly("mark", "em")
-    end
-  end
-
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(span.wrapper_tag).to eq(nil)
+      expect(span.wrapper_tags).to eq(["mark", "em"])
     end
   end
 
@@ -51,7 +45,11 @@ RSpec.describe MiddlemanDatoDast::Nodes::Span do
   describe "#render" do
     it "returns the html string" do
       expect(span.render).to eq(<<~HTML.strip)
-        <mark><em>Some random text here, move on!</em></mark>
+        <mark>
+        <em>
+        Some random text here, move on!
+        </em>
+        </mark>
       HTML
     end
   end

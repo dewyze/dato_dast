@@ -30,16 +30,20 @@ RSpec.describe MiddlemanDatoDast::Nodes::ListItem do
     end
   end
 
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(list.wrapper_tag).to eq(nil)
+      expect(list.wrapper_tags).to be_empty
     end
   end
 
   describe "#render" do
     it "returns the html string" do
-      expect(list.render).to eq(<<~HTML)
-        <li><p>This is a list item!</p></li>
+      expect(list.render).to eq(<<~HTML.strip)
+        <li>
+        <p>
+        This is a list item!
+        </p>
+        </li>
       HTML
     end
   end

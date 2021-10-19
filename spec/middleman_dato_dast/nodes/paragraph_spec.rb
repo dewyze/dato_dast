@@ -25,16 +25,18 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     end
   end
 
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(paragraph.wrapper_tag).to eq(nil)
+      expect(paragraph.wrapper_tags).to be_empty
     end
   end
 
   describe "#render" do
     it "returns the html string" do
-      expect(paragraph.render).to eq(<<~HTML)
-        <p>A simple paragraph!</p>
+      expect(paragraph.render).to eq(<<~HTML.strip)
+        <p>
+        A simple paragraph!
+        </p>
       HTML
     end
   end

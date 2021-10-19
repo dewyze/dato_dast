@@ -2,5 +2,6 @@
 - Allow custom meta for a node
 - Allow a lambda for building a tag/render
 - Use middleman syntax for code
+  - Use language in code
 - Handle whether a tag adds a newline
 - What if not self closing?

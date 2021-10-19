@@ -1,4 +1,4 @@
-RSpec.describe MiddlemanDatoDast::Nodes::Blockquote do
+RSpec.describe MiddlemanDatoDast::Nodes::AttributedQuote do
   subject(:blockquote) { described_class.new(raw) }
 
   let(:raw) do
@@ -31,6 +31,12 @@ RSpec.describe MiddlemanDatoDast::Nodes::Blockquote do
     end
   end
 
+  describe "#attribution" do
+    it "returns the attribution" do
+      expect(blockquote.attribution).to eq("Oscar Wilde")
+    end
+  end
+
   describe "#wrapper_tags" do
     it "returns 'figure'" do
       expect(blockquote.wrapper_tags).to be_empty
@@ -39,12 +45,17 @@ RSpec.describe MiddlemanDatoDast::Nodes::Blockquote do
 
   describe "#render" do
     it "returns the html string" do
-      expect(blockquote.render).to eq(<<~HTML.strip)
+      expect(blockquote.render).to eq(<<~HTML)
+      <figure>
       <blockquote>
       <p>
       Be yourself; everyone else is taken.
       </p>
       </blockquote>
+      <figcaption>
+      Oscar Wilde
+      </figcaption>
+      </figure>
       HTML
     end
   end

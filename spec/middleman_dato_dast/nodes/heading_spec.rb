@@ -32,24 +32,18 @@ RSpec.describe MiddlemanDatoDast::Nodes::Heading do
     end
   end
 
-  describe "#children" do
-    it "returns the children" do
-      children = [{ "type" => "span", "value" => "An h2 heading!" }]
-
-      expect(heading.children).to eq(children)
-    end
-  end
-
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(heading.wrapper_tag).to eq(nil)
+      expect(heading.wrapper_tags).to be_empty
     end
   end
 
   describe "#render" do
     it "returns the html string" do
-      expect(heading.render).to eq(<<~HTML)
-        <h2>An h2 heading!</h2>
+      expect(heading.render).to eq(<<~HTML.strip)
+        <h2>
+        An h2 heading!
+        </h2>
       HTML
     end
   end

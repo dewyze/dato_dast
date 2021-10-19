@@ -1,6 +1,8 @@
 require "middleman_dato_dast/nodes/base"
 require "middleman_dato_dast/nodes/span"
+require "middleman_dato_dast/nodes/generic"
 require "middleman_dato_dast/nodes/block"
+require "middleman_dato_dast/nodes/attributed_quote"
 require "middleman_dato_dast/nodes/blockquote"
 require "middleman_dato_dast/nodes/code"
 require "middleman_dato_dast/nodes/heading"

@@ -22,6 +22,12 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
     end
   end
 
+  describe "#wrapper_tags" do
+    it "returns 'pre'" do
+      expect(code.wrapper_tags).to eq(["pre"])
+    end
+  end
+
   describe "#language" do
     it "returns the language" do
       expect(code.language).to eq("javascript")
@@ -34,18 +40,20 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
     end
   end
 
-  describe "#wrapper_tag" do
-    it "returns 'pre'" do
-      expect(code.wrapper_tag).to eq("pre")
+  describe "#render_value" do
+    it "returns the code" do
+      expect(code.render_value).to eq("function greetings() {<br/>  console.log('Hi!');<br/>}")
     end
   end
 
   describe "#render" do
     it "returns the html string" do
       expect(code.render).to eq(<<~HTML.strip)
-      <pre>
-        <code>function greetings() {<br/>  console.log('Hi!');<br/>}</code>
-      </pre>
+        <pre>
+        <code>
+        function greetings() {<br/>  console.log('Hi!');<br/>}
+        </code>
+        </pre>
       HTML
     end
   end

@@ -40,18 +40,22 @@ RSpec.describe MiddlemanDatoDast::Nodes::Root do
     end
   end
 
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(root.wrapper_tag).to eq(nil)
+      expect(root.wrapper_tags).to be_empty
     end
   end
 
   describe "#render" do
     it "returns the html string" do
-      expect(root.render).to eq(<<~HTML)
+      expect(root.render).to eq(<<~HTML.strip)
         <div>
-          <h1>Title</h1>
-          <p>A simple paragraph!</p>
+        <h1>
+        Title
+        </h1>
+        <p>
+        A simple paragraph!
+        </p>
         </div>
       HTML
     end

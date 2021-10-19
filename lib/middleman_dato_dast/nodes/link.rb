@@ -14,13 +14,17 @@ module MiddlemanDatoDast
       end
 
       def meta_attributes
-        meta.inject("") do |html, pair|
+        meta.inject(href) do |html, pair|
           html + " #{pair["id"]}=\"#{pair["value"]}\""
         end
       end
 
       def render
-        "<#{tag}#{href}#{meta_attributes}>#{render_children}</#{tag}>"
+        <<~HTML.chomp
+        <#{tag}#{meta_attributes}>
+        #{render_children}
+        </#{tag}>
+        HTML
       end
     end
   end

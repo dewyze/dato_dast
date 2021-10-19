@@ -47,16 +47,18 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
     end
   end
 
-  describe "#wrapper_tag" do
+  describe "#wrapper_tags" do
     it "returns nil" do
-      expect(link.wrapper_tag).to eq(nil)
+      expect(link.wrapper_tags).to be_empty
     end
   end
 
   describe "#render" do
     it "returns the html string" do
       expect(link.render).to eq(<<~HTML.strip)
-      <a href="https://www.datocms.com/" rel="nofollow" target="_blank">The best CMS in town</a>
+        <a href="https://www.datocms.com/" rel="nofollow" target="_blank">
+        The best CMS in town
+        </a>
       HTML
     end
   end
