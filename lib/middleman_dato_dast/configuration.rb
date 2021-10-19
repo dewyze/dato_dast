@@ -39,12 +39,13 @@ module MiddlemanDatoDast
       Nodes::Code.type => "pre",
     }
 
-    attr_writer :mark_tags, :node_tags, :nodes, :wrapper_tags
+    attr_writer :mark_tags, :node_tags, :nodes, :tag_class, :wrapper_tags
 
     def initialize
       @mark_tags = {}
       @node_tags = {}
       @nodes = {}
+      @tag_class = {}
       @wrapper_tags = {}
     end
 
@@ -63,6 +64,10 @@ module MiddlemanDatoDast
 
     def wrapper_tags
       WRAPPER_TAGS.merge(@wrapper_tags)
+    end
+
+    def tag_class
+      @tag_class
     end
   end
 end

@@ -61,6 +61,27 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     end
   end
 
+  describe "#classes" do
+    it "returns the classes when specified" do
+      raw["class"] = "blue mx-auto"
+      node = described_class.new(raw)
+
+      expect(node.classes).to eq("blue mx-auto")
+    end
+
+    it "returns nil if there are none" do
+      expect(node.classes).to be_nil
+    end
+
+    it "returns the configuration if it's present" do
+      MiddlemanDatoDast.configure do |config|
+        config.tag_class["paragraph"] = "blue mx-auto"
+      end
+
+      expect(node.classes).to eq("blue mx-auto")
+    end
+  end
+
   describe "#render" do
     it "returns the html string" do
       expect(node.render).to eq(<<~HTML.strip)

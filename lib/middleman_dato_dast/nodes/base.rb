@@ -47,7 +47,7 @@ module MiddlemanDatoDast
       end
 
       def classes
-        # TODO
+        @classes ||= @node["class"] || config.tag_class[type]
       end
 
       def render
