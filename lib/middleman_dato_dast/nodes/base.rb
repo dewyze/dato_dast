@@ -5,7 +5,6 @@ module MiddlemanDatoDast
 
       EMPTY = ""
       NEWLINE = "\n"
-      SPACING = "  ".freeze
 
       def self.type
         name.demodulize.camelize(:lower)
@@ -23,47 +22,38 @@ module MiddlemanDatoDast
         @node["children"]
       end
 
-      def wrapper_tags
-        Array(config.wrapper_tags[type])
-      end
-
       def tag
         config.node_tags[type]
+      end
+
+      def open_tag
+        return EMPTY unless tag
+
+        "<#{tag}>" + NEWLINE
+      end
+
+      def close_tag
+        return EMPTY unless tag
+
+        NEWLINE + "</#{tag}>"
+      end
+
+      def wrapper_tags
+        @node["wrapper_tags"] || Array(config.wrapper_tags[type])
+      end
+
+      def wrappers
+        @wrappers ||= wrapper_tags.map { |wrapper_tag| HtmlTag.parse(wrapper_tag) }
       end
 
       def classes
         # TODO
       end
 
-      def open
-        return "" unless tag
-
-        "<#{tag}>" + NEWLINE
-      end
-
-      def close
-        return "" unless tag
-
-        NEWLINE + "</#{tag}>"
-      end
-
       def render
-        html = ""
-        if wrapper_tags.present?
-          opening = ""
-          closing = ""
-          wrapper_tags.each_with_index do |wrapper_tag, index|
-            opening += "<#{wrapper_tag}>" + NEWLINE
-            closing = NEWLINE + "</#{wrapper_tag}>" + closing
-          end
-          html += opening + open
-          html += render_value
-          html += close + closing
-        else
-          html += open
-          html += render_value
-          html + close
-        end
+        html = open_tag + render_value + close_tag
+
+        wrappers.map(&:open).join("") + html + wrappers.reverse.map(&:close).join("")
       end
 
       def render_value
@@ -71,9 +61,9 @@ module MiddlemanDatoDast
       end
 
       def render_children
-        return "" unless children.present?
+        return EMPTY unless children.present?
 
-        html = children.map do |child|
+        children.map do |child|
           wrap(child).render
         end.join("\n").gsub(/\n+/, "\n")
       end
