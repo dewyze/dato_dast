@@ -6,10 +6,10 @@ module MiddlemanDatoDast
         new(tag)
       when Hash
         html_tag = tag["tag"]
-        classes = tag["class"]
+        css_class = tag["css_class"]
         meta = tag["meta"]
 
-        HtmlTag.new(html_tag, { "class" => classes, "meta" => meta })
+        HtmlTag.new(html_tag, { "css_class" => css_class, "meta" => meta })
       when HtmlTag
         tag
       else
@@ -19,12 +19,12 @@ module MiddlemanDatoDast
 
     def initialize(tag, options = {})
       @tag = tag
-      @classes = options["class"] || []
+      @css_class = options["css_class"] || []
       @meta = options["meta"] || {}
     end
 
     def open
-      "<#{@tag}#{classes}#{meta}>\n"
+      "<#{@tag}#{css_class}#{meta}>\n"
     end
 
     def close
@@ -33,10 +33,10 @@ module MiddlemanDatoDast
 
     private
 
-    def classes
-      return "" if @classes.empty?
+    def css_class
+      return "" unless @css_class.present?
 
-      " class=\"#{@classes}\""
+      " class=\"#{@css_class}\""
     end
 
     def meta

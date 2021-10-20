@@ -3,7 +3,7 @@ RSpec.describe MiddlemanDatoDast::HtmlTag do
   let(:hash_tag) do
     described_class.parse({
       "tag" => "p",
-      "class" => "blue mx-auto",
+      "css_class" => "blue mx-auto",
       "meta" => [{ "id" => "data-value", "value" => 1 }, { "id" => "data-id", "value" => 2 }],
     })
   end

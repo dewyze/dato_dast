@@ -61,24 +61,24 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     end
   end
 
-  describe "#classes" do
-    it "returns the classes when specified" do
-      raw["class"] = "blue mx-auto"
+  describe "#css_class" do
+    it "returns the css_class when specified" do
+      raw["css_class"] = "blue mx-auto"
       node = described_class.new(raw)
 
-      expect(node.classes).to eq("blue mx-auto")
+      expect(node.css_class).to eq("blue mx-auto")
     end
 
     it "returns nil if there are none" do
-      expect(node.classes).to be_nil
+      expect(node.css_class).to be_nil
     end
 
     it "returns the configuration if it's present" do
       MiddlemanDatoDast.configure do |config|
-        config.types["paragraph"]["class"] = "blue mx-auto"
+        config.types["paragraph"]["css_class"] = "blue mx-auto"
       end
 
-      expect(node.classes).to eq("blue mx-auto")
+      expect(node.css_class).to eq("blue mx-auto")
     end
   end
 
@@ -94,11 +94,15 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     it "renders wrapper tags" do
       object_wrapper = MiddlemanDatoDast::HtmlTag.new(
         "body", {
-          "class" => "body--wide mx-auto",
+          "css_class" => "body--wide mx-auto",
           "meta" => [{ "id" => "click", "value" => "hide" }],
         },
       )
-      hash_wrapper = { "tag" => "section", "class" => "blue w-10", "meta" => [{ "id" => "data-value", "value" => 1 }]}
+      hash_wrapper = {
+        "tag" => "section",
+        "css_class" => "blue w-10",
+        "meta" => [{ "id" => "data-value", "value" => 1 }],
+      }
       string_wrapper = "article"
       raw["wrapper_tags"] = [object_wrapper, hash_wrapper, string_wrapper]
       node = described_class.new(raw)

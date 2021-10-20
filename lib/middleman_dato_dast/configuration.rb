@@ -12,6 +12,7 @@ module MiddlemanDatoDast
       Nodes::Span.type => { "node" => Nodes::Span },
       Nodes::ThematicBreak.type => { "tag" => "hr", "node" => Nodes::ThematicBreak },
     }
+
     MARK_CONFIG = {
       Marks::CODE => { "tag" => "code" },
       Marks::EMPHASIS => { "tag" => "em" },

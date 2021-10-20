@@ -46,8 +46,8 @@ module MiddlemanDatoDast
         @wrappers ||= wrapper_tags.map { |wrapper_tag| HtmlTag.parse(wrapper_tag) }
       end
 
-      def classes
-        @classes ||= @node["class"] || config.types[type]["class"]
+      def css_class
+        @css_class ||= @node["css_class"] || config.types[type]["css_class"]
       end
 
       def render
