@@ -4,7 +4,7 @@ module MiddlemanDatoDast
       # TODO check if type exists
 
       type = value["type"]
-      config.nodes[type].new(value)
+      config.types[type]["node"].new(value)
     end
 
     def config

@@ -75,7 +75,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
 
     it "returns the configuration if it's present" do
       MiddlemanDatoDast.configure do |config|
-        config.tag_class["paragraph"] = "blue mx-auto"
+        config.types["paragraph"]["class"] = "blue mx-auto"
       end
 
       expect(node.classes).to eq("blue mx-auto")

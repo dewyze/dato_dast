@@ -1,73 +1,39 @@
 module MiddlemanDatoDast
   class Configuration
-    MARK_TAGS = {
-      Marks::CODE => "code",
-      Marks::EMPHASIS => "em",
-      Marks::HIGHLIGHT => "mark",
-      Marks::STRIKETHROUGH => "strike",
-      Marks::STRONG => "strong",
-      Marks::UNDERLINE => "u",
+    TYPE_CONFIG = {
+      Nodes::Blockquote.type => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
+      Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
+      Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
+      Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },
+      Nodes::List.type => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => Nodes::List },
+      Nodes::ListItem.type => { "tag" => "li", "node" => Nodes::ListItem },
+      Nodes::Paragraph.type => { "tag" => "p", "node" => Nodes::Paragraph },
+      Nodes::Root.type => { "tag" => "div", "node" => Nodes::Root },
+      Nodes::Span.type => { "node" => Nodes::Span },
+      Nodes::ThematicBreak.type => { "tag" => "hr", "node" => Nodes::ThematicBreak },
+    }
+    MARK_CONFIG = {
+      Marks::CODE => { "tag" => "code" },
+      Marks::EMPHASIS => { "tag" => "em" },
+      Marks::HIGHLIGHT => { "tag" => "mark" },
+      Marks::STRIKETHROUGH => { "tag" => "strike" },
+      Marks::STRONG => { "tag" => "strong" },
+      Marks::UNDERLINE => { "tag" => "u" },
     }
 
-    NODE_TAGS = {
-      Nodes::Blockquote.type => "blockquote",
-      Nodes::Code.type => "code",
-      Nodes::Heading.type => "h#",
-      Nodes::Link.type => "a",
-      Nodes::List.type => { "bulleted" => "ul", "numbered" => "ol" },
-      Nodes::ListItem.type => "li",
-      Nodes::Paragraph.type => "p",
-      Nodes::Root.type => "div",
-      Nodes::Span.type => nil,
-      Nodes::ThematicBreak.type => "hr",
-    }
-
-    NODES = {
-      Nodes::Blockquote.type => Nodes::AttributedQuote,
-      Nodes::Code.type => Nodes::Code,
-      Nodes::Heading.type => Nodes::Heading,
-      Nodes::Link.type => Nodes::Link,
-      Nodes::List.type => Nodes::List,
-      Nodes::ListItem.type => Nodes::ListItem,
-      Nodes::Paragraph.type => Nodes::Paragraph,
-      Nodes::Root.type => Nodes::Root,
-      Nodes::Span.type => Nodes::Span,
-      Nodes::ThematicBreak.type => Nodes::ThematicBreak,
-    }
-
-    WRAPPER_TAGS = {
-      Nodes::Code.type => "pre",
-    }
-
-    attr_writer :mark_tags, :node_tags, :nodes, :tag_class, :wrapper_tags
+    attr_writer :marks, :types
 
     def initialize
-      @mark_tags = {}
-      @node_tags = {}
-      @nodes = {}
-      @tag_class = {}
-      @wrapper_tags = {}
+      @marks = {}
+      @types = {}
     end
 
-    def node_tags
-      NODE_TAGS.merge(@node_tags)
+    def marks
+      MARK_CONFIG.merge(@marks)
     end
 
-    def nodes
-      # TODO, should this throw an error? Should there be an add?
-      NODES.merge(@nodes)
-    end
-
-    def mark_tags
-      MARK_TAGS.merge(@mark_tags)
-    end
-
-    def wrapper_tags
-      WRAPPER_TAGS.merge(@wrapper_tags)
-    end
-
-    def tag_class
-      @tag_class
+    def types
+      TYPE_CONFIG.merge(@types)
     end
   end
 end

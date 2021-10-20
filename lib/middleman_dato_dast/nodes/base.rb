@@ -23,7 +23,7 @@ module MiddlemanDatoDast
       end
 
       def tag
-        config.node_tags[type]
+        config.types[type]["tag"]
       end
 
       def open_tag
@@ -39,7 +39,7 @@ module MiddlemanDatoDast
       end
 
       def wrapper_tags
-        @node["wrapper_tags"] || Array(config.wrapper_tags[type])
+        @node["wrapper_tags"] || Array(config.types[type]["wrappers"])
       end
 
       def wrappers
@@ -47,7 +47,7 @@ module MiddlemanDatoDast
       end
 
       def classes
-        @classes ||= @node["class"] || config.tag_class[type]
+        @classes ||= @node["class"] || config.types[type]["class"]
       end
 
       def render

@@ -29,7 +29,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Span do
 
   describe "#wrapper_tags" do
     it "returns nil" do
-      expect(span.wrapper_tags).to eq(["mark", "em"])
+      expect(span.wrapper_tags).to eq([{"tag" => "mark"}, {"tag" => "em"}])
     end
   end
 
