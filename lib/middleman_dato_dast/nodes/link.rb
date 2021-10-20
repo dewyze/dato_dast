@@ -6,7 +6,7 @@ module MiddlemanDatoDast
       end
 
       def meta
-        @node["meta"]
+        @node["meta"] || {}
       end
 
       def href

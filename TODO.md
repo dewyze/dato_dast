@@ -1,7 +1,5 @@
-- Allow custom classes for a node
-- Allow custom meta for a node
 - Allow a lambda for building a tag/render
 - Use middleman syntax for code
   - Use language in code
-- Handle whether a tag adds a newline
-- What if not self closing?
+- Better API for helper
+  - Take an optional config for that instance only?

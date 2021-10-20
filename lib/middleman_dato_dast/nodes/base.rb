@@ -1,8 +1,6 @@
 module MiddlemanDatoDast
   module Nodes
     class Base
-      include NodeUtils
-
       EMPTY = ""
       NEWLINE = "\n"
 
@@ -12,6 +10,10 @@ module MiddlemanDatoDast
 
       def initialize(node)
         @node = node
+      end
+
+      def config
+        MiddlemanDatoDast.configuration
       end
 
       def type
@@ -42,6 +44,14 @@ module MiddlemanDatoDast
         @node["wrapper_tags"] || Array(config.types[type]["wrappers"])
       end
 
+      def open_wrappers
+        wrappers.map(&:open).join("")
+      end
+
+      def close_wrappers
+        wrappers.reverse.map(&:close).join("")
+      end
+
       def wrappers
         @wrappers ||= wrapper_tags.map { |wrapper_tag| HtmlTag.parse(wrapper_tag) }
       end
@@ -53,7 +63,7 @@ module MiddlemanDatoDast
       def render
         html = open_tag + render_value + close_tag
 
-        wrappers.map(&:open).join("") + html + wrappers.reverse.map(&:close).join("")
+        open_wrappers + html + close_wrappers
       end
 
       def render_value
@@ -64,7 +74,7 @@ module MiddlemanDatoDast
         return EMPTY unless children.present?
 
         children.map do |child|
-          wrap(child).render
+          Nodes.wrap(child).render
         end.join("\n").gsub(/\n+/, "\n")
       end
     end

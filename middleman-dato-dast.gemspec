@@ -33,6 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "activesupport"
 
+  spec.add_runtime_dependency("middleman-core", [">= 4.4.0"])
+
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
 end

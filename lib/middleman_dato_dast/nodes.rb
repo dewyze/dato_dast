@@ -14,3 +14,15 @@ require "middleman_dato_dast/nodes/list_item"
 require "middleman_dato_dast/nodes/paragraph"
 require "middleman_dato_dast/nodes/root"
 require "middleman_dato_dast/nodes/thematic_break"
+
+
+module MiddlemanDatoDast
+  module Nodes
+    def self.wrap(value)
+      # TODO check if type exists
+
+      type = value["type"]
+      MiddlemanDatoDast.configuration.types[type]["node"].new(value)
+    end
+  end
+end
