@@ -4,6 +4,7 @@ module MiddlemanDatoDast
       Nodes::Blockquote.type => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
       Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
       Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
+      Nodes::ItemLink.type => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
       Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },
       Nodes::List.type => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => Nodes::List },
       Nodes::ListItem.type => { "tag" => "li", "node" => Nodes::ListItem },
@@ -23,10 +24,12 @@ module MiddlemanDatoDast
     }
 
     attr_writer :marks, :types
+    attr_accessor :item_links
 
     def initialize
       @marks = {}
       @types = {}
+      @item_links = {}
     end
 
     def marks
