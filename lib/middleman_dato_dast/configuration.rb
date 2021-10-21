@@ -23,13 +23,26 @@ module MiddlemanDatoDast
       Marks::UNDERLINE => { "tag" => "u" },
     }
 
+    attr_reader :host
     attr_writer :marks, :types
-    attr_accessor :item_links
+    attr_accessor :item_links, :smart_links
 
     def initialize
       @marks = {}
       @types = {}
       @item_links = {}
+      @smart_links = true
+      @host = nil
+    end
+
+    def host=(new_host)
+      uri = URI(new_host)
+
+      if uri.host.present?
+        @host = uri.host
+      else
+        @host = uri.to_s
+      end
     end
 
     def marks

@@ -4,14 +4,18 @@ require "middleman-core"
 module MiddlemanDatoDast
   class MiddlemanExtension < Middleman::Extension
     option :types, {}, "Configuration hash for a given block node type"
-    option :item_links, {}, "Configuration hash item links types and the url field"
     option :marks, {}, "Configuration hash for a given mark"
+    option :item_links, {}, "Configuration hash item links types and the url field"
+    option :smart_links, true, "Open Link items in new windows and ItemLinks in the same window"
+    option :host, nil, "Host for your site, used in conjunction with 'smart_links' option"
 
     def after_configuration
       MiddlemanDatoDast.configure do |config|
         config.types = options[:types]
         config.marks = options[:marks]
         config.item_links = options[:item_links]
+        config.smart_links = options[:smart_links]
+        config.host = options[:host]
       end
     end
 

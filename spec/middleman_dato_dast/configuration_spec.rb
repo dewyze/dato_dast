@@ -1,144 +1,115 @@
 RSpec.describe MiddlemanDatoDast::Configuration do
   subject(:config) { described_class.new }
 
-  # describe "#mark_tags" do
-  #   it "returns the defaults" do
-  #     defaults = {
-  #       "code" => "code",
-  #       "emphasis" => "em",
-  #       "highlight" => "mark",
-  #       "strikethrough" => "strike",
-  #       "strong" => "strong",
-  #       "underline" => "u",
-  #     }
-  #
-  #     expect(config.mark_tags).to eq(defaults)
-  #   end
-  #
-  #   it "merges in new values" do
-  #     new_tags = {
-  #       "code" => "pre",
-  #       "superscript" => "sup",
-  #     }
-  #     expected_tags = {
-  #       "code" => "pre",
-  #       "emphasis" => "em",
-  #       "highlight" => "mark",
-  #       "strikethrough" => "strike",
-  #       "strong" => "strong",
-  #       "superscript" => "sup",
-  #       "underline" => "u",
-  #     }
-  #
-  #     config.mark_tags = new_tags
-  #
-  #     expect(config.mark_tags).to eq(expected_tags)
-  #   end
-  # end
-  #
-  # describe "#node_tags" do
-  #   it "returns the defaults" do
-  #     defaults = {
-  #       "blockquote" => "blockquote",
-  #       "code" => "code",
-  #       "heading" => "h#",
-  #       "link" => "a",
-  #       "list" => { "bulleted" => "ul", "numbered" => "ol" },
-  #       "listItem" => "li",
-  #       "paragraph" => "p",
-  #       "root" => "div",
-  #       "span" => nil,
-  #       "thematicBreak" => "hr",
-  #     }
-  #
-  #     expect(config.node_tags).to eq(defaults)
-  #   end
-  #
-  #   it "merges in new values" do
-  #     new_tags = {
-  #       "paragraph" => "div",
-  #     }
-  #     expected_tags = {
-  #       "blockquote" => "blockquote",
-  #       "code" => "code",
-  #       "heading" => "h#",
-  #       "link" => "a",
-  #       "list" => { "bulleted" => "ul", "numbered" => "ol" },
-  #       "listItem" => "li",
-  #       "paragraph" => "div",
-  #       "root" => "div",
-  #       "span" => nil,
-  #       "thematicBreak" => "hr",
-  #     }
-  #
-  #     config.node_tags = new_tags
-  #
-  #     expect(config.node_tags).to eq(expected_tags)
-  #   end
-  # end
-  #
-  # describe "#nodes" do
-  #   it "returns the defaults" do
-  #     defaults = {
-  #       "blockquote" => MiddlemanDatoDast::Nodes::AttributedQuote,
-  #       "code" => MiddlemanDatoDast::Nodes::Code,
-  #       "heading" => MiddlemanDatoDast::Nodes::Heading,
-  #       "link" => MiddlemanDatoDast::Nodes::Link,
-  #       "list" => MiddlemanDatoDast::Nodes::List,
-  #       "listItem" => MiddlemanDatoDast::Nodes::ListItem,
-  #       "paragraph" => MiddlemanDatoDast::Nodes::Paragraph,
-  #       "root" => MiddlemanDatoDast::Nodes::Root,
-  #       "span" => MiddlemanDatoDast::Nodes::Span,
-  #       "thematicBreak" => MiddlemanDatoDast::Nodes::ThematicBreak,
-  #     }
-  #
-  #     expect(config.nodes).to eq(defaults)
-  #   end
-  #
-  #   it "merges in new values" do
-  #     new_nodes = {
-  #       "blockquote" => MiddlemanDatoDast::Nodes::Blockquote,
-  #     }
-  #     expected_nodes = {
-  #       "blockquote" => MiddlemanDatoDast::Nodes::Blockquote,
-  #       "code" => MiddlemanDatoDast::Nodes::Code,
-  #       "heading" => MiddlemanDatoDast::Nodes::Heading,
-  #       "link" => MiddlemanDatoDast::Nodes::Link,
-  #       "list" => MiddlemanDatoDast::Nodes::List,
-  #       "listItem" => MiddlemanDatoDast::Nodes::ListItem,
-  #       "paragraph" => MiddlemanDatoDast::Nodes::Paragraph,
-  #       "root" => MiddlemanDatoDast::Nodes::Root,
-  #       "span" => MiddlemanDatoDast::Nodes::Span,
-  #       "thematicBreak" => MiddlemanDatoDast::Nodes::ThematicBreak,
-  #     }
-  #
-  #     config.nodes = new_nodes
-  #
-  #     expect(config.nodes).to eq(expected_nodes)
-  #   end
-  # end
-  #
-  # describe "#wrapper_tags" do
-  #   it "returns the defaults" do
-  #     defaults = {
-  #       "code" => "pre",
-  #     }
-  #
-  #     expect(config.wrapper_tags).to eq(defaults)
-  #   end
-  #
-  #   it "merges in new values" do
-  #     new_tags = {
-  #       "paragraph" => "section",
-  #     }
-  #     expected_tags = {
-  #       "paragraph" => "section",
-  #       "code" => "pre",
-  #     }
-  #
-  #     config.wrapper_tags = new_tags
-  #
-  #     expect(config.wrapper_tags).to eq(expected_tags)
-  #   end
-  # end
+  describe "#types" do
+    it "returns the defaults" do
+      defaults = {
+        "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
+        "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
+        "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
+        "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
+        "link" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::Link },
+        "list" => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => MiddlemanDatoDast::Nodes::List },
+        "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
+        "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
+        "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
+        "span" => { "node" => MiddlemanDatoDast::Nodes::Span },
+        "thematicBreak" => { "tag" => "hr", "node" => MiddlemanDatoDast::Nodes::ThematicBreak }
+      }
+
+      expect(config.types).to eq(defaults)
+    end
+
+    it "merges in new values" do
+      klass = Class.new
+
+      new_types = {
+        "link" => { "tag" => "button", "node" => klass },
+        "newType" => { "tag" => "div" },
+      }
+      expected_types = {
+        "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
+        "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
+        "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
+        "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
+        "link" => { "tag" => "button", "node" => klass },
+        "list" => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => MiddlemanDatoDast::Nodes::List },
+        "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
+        "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
+        "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
+        "span" => { "node" => MiddlemanDatoDast::Nodes::Span },
+        "thematicBreak" => { "tag" => "hr", "node" => MiddlemanDatoDast::Nodes::ThematicBreak },
+        "newType" => { "tag" => "div" },
+      }
+
+      config.types = new_types
+
+      expect(config.types).to eq(expected_types)
+    end
+  end
+
+  describe "#marks" do
+    it "returns the defaults" do
+      defaults = {
+        "code" => { "tag" => "code"},
+        "emphasis" => { "tag" => "em" },
+        "highlight" => { "tag" => "mark" },
+        "strikethrough" => { "tag" => "strike" },
+        "strong" => { "tag" => "strong" },
+        "underline" => { "tag" => "u" },
+      }
+
+      expect(config.marks).to eq(defaults)
+    end
+
+    it "merges in new values" do
+      new_marks = {
+        "code" => { "tag" => "pre"},
+        "superscript" => { "tag" => "sup" },
+      }
+      expected_marks = {
+        "code" => { "tag" => "pre"},
+        "emphasis" => { "tag" => "em" },
+        "highlight" => { "tag" => "mark" },
+        "strikethrough" => { "tag" => "strike" },
+        "strong" => { "tag" => "strong" },
+        "underline" => { "tag" => "u" },
+        "superscript" => { "tag" => "sup" },
+      }
+
+      config.marks = new_marks
+
+      expect(config.marks).to eq(expected_marks)
+    end
+  end
+
+  describe "#smart_links" do
+    it "defaults to true" do
+      expect(config.smart_links).to be true
+    end
+
+    it "can be configured" do
+      config.smart_links = false
+
+      expect(config.smart_links).to be false
+    end
+  end
+
+  describe "#host" do
+    it "defaults to nil" do
+      expect(config.host).to be_nil
+    end
+
+    it "accepts a string and returns a host" do
+      config.host = "google.com"
+
+      expect(config.host).to eq("google.com")
+    end
+
+    it "accepts a uri and returns a host" do
+      config.host = "https://google.com"
+
+      expect(config.host).to eq("google.com")
+    end
+  end
 end

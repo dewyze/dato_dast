@@ -40,7 +40,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
 
   describe "#url" do
     it "returns the url" do
-      expect(item_link.url).to eq("/my-cool-page")
+      expect(item_link.url).to eq("my-cool-page")
+    end
+  end
+
+  describe "#path" do
+    it "returns a relative path" do
+      expect(item_link.path).to eq("/my-cool-page")
     end
   end
 

@@ -17,4 +17,8 @@ module MiddlemanDatoDast
   def self.configure
     yield configuration
   end
+
+  def self.reset_configuration
+    @configuration = MiddlemanDatoDast::Configuration.new
+  end
 end

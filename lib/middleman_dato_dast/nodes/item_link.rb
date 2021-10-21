@@ -9,16 +9,18 @@ module MiddlemanDatoDast
         @links.find { |link| link[:id] == item_id }
       end
 
+      def url
+        item[url_key]
+      end
+
       def item_type
         item[:item_type]
       end
 
+      private
+
       def url_key
         config.item_links[item_type]
-      end
-
-      def url
-        "/#{item[url_key]}"
       end
     end
   end

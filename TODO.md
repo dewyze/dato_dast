@@ -1,5 +1,4 @@
-- Meta attributes for links?
-- Default no follow for links?
+- all tags can have meta/classes
 - Allow a lambda for building a tag/render
 - Use middleman syntax for code
   - Use language in code

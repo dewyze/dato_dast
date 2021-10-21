@@ -1,5 +1,7 @@
 module MiddlemanDatoDast
   class HtmlTag
+    NEWLINE = "\n"
+
     def self.parse(tag)
       case tag
       when String, nil
@@ -13,7 +15,7 @@ module MiddlemanDatoDast
       when HtmlTag
         tag
       else
-        raise "BOOM"
+        nil
       end
     end
 
@@ -24,11 +26,11 @@ module MiddlemanDatoDast
     end
 
     def open
-      "<#{@tag}#{css_class}#{meta}>\n"
+      "<#{@tag}#{css_class}#{meta}>" + NEWLINE
     end
 
     def close
-      "\n</#{@tag}>"
+      NEWLINE + "</#{@tag}>"
     end
 
     private
