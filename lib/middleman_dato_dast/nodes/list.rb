@@ -6,7 +6,7 @@ module MiddlemanDatoDast
       end
 
       def tag
-        @tag ||= config.types[type]["tag"][style]
+        config.types[type][style]["tag"]
       end
     end
   end

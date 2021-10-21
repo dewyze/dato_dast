@@ -15,9 +15,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::Span do
     end
   end
 
-  describe "#tag" do
-    it "returns nil" do
-      expect(span.tag).to be_nil
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(span.tag_info).to eq({
+        "tag" => nil,
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
@@ -27,9 +31,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::Span do
     end
   end
 
-  describe "#wrapper_tags" do
-    it "returns nil" do
-      expect(span.wrapper_tags).to eq([{"tag" => "mark"}, {"tag" => "em"}])
+  describe "#wrappers" do
+    it "returns the wrappers" do
+      expect(span.wrappers).to eq([{"tag" => "mark"}, {"tag" => "em"}])
     end
   end
 

@@ -5,10 +5,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
     {
       "type" => "itemLink",
       "item" => "38945648",
-      "meta" => [
-        { "id" => "rel", "value" => "nofollow" },
-        { "id" => "target", "value" => "_blank" }
-      ],
+      "meta" => meta_fields,
       "children" => [
         {
           "type" => "span",
@@ -16,6 +13,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
         }
       ]
     }
+  end
+  let(:meta_fields) do
+    [{ "id" => "rel", "value" => "nofollow" }, { "id" => "target", "value" => "_blank" }]
   end
 
   let(:links) { [{ id: "38945648", slug: "my-cool-page", item_type: "page" }] }
@@ -32,9 +32,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
     end
   end
 
-  describe "#tag" do
-    it "returns 'a'" do
-      expect(item_link.tag).to eq("a")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(item_link.tag_info).to eq({
+        "tag" => "a",
+        "meta" => meta_fields,
+        "css_class" => nil,
+      })
     end
   end
 
@@ -61,9 +65,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrapper" do
     it "returns nil" do
-      expect(item_link.wrapper_tags).to be_empty
+      expect(item_link.wrappers).to be_empty
     end
   end
 

@@ -9,7 +9,7 @@ module MiddlemanDatoDast
         @node["value"].gsub(/\n/, "<br/>")
       end
 
-      def wrapper_tags
+      def wrappers
         marks.map { |mark| config.marks[mark] }
       end
 

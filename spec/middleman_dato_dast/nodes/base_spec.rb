@@ -13,6 +13,8 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     }
   end
 
+  after(:each) { MiddlemanDatoDast.reset_configuration }
+
   describe "#type" do
     it "returns 'paragraph'" do
       expect(node.type).to eq("paragraph")
@@ -31,54 +33,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     end
   end
 
-  describe "#open_tag" do
-    it "returns the open tag with newline" do
-      expect(node.open_tag).to eq("<p>\n")
-    end
-
-    it "returns empty when there is no tag defined" do
-      node = described_class.new({ "type" => "span", "value" => "Hello world!" })
-
-      expect(node.open_tag).to eq("")
-    end
-  end
-
-  describe "#close_tag" do
-    it "returns the close tag with preceding newline" do
-      expect(node.close_tag).to eq("\n</p>")
-    end
-
-    it "returns empty when there is no tag defined" do
-      node = described_class.new({ "type" => "span", "value" => "Hello world!" })
-
-      expect(node.close_tag).to eq("")
-    end
-  end
-
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns nil" do
-      expect(node.wrapper_tags).to be_empty
-    end
-  end
-
-  describe "#css_class" do
-    it "returns the css_class when specified" do
-      raw["css_class"] = "blue mx-auto"
-      node = described_class.new(raw)
-
-      expect(node.css_class).to eq("blue mx-auto")
-    end
-
-    it "returns nil if there are none" do
-      expect(node.css_class).to be_nil
-    end
-
-    it "returns the configuration if it's present" do
-      MiddlemanDatoDast.configure do |config|
-        config.types["paragraph"]["css_class"] = "blue mx-auto"
-      end
-
-      expect(node.css_class).to eq("blue mx-auto")
+      expect(node.wrappers).to be_empty
     end
   end
 
@@ -89,6 +46,10 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
         A simple paragraph!
         </p>
       HTML
+    end
+
+    it "renders tag classes and meta fields" do
+
     end
 
     it "renders wrapper tags" do
@@ -104,7 +65,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
         "meta" => [{ "id" => "data-value", "value" => 1 }],
       }
       string_wrapper = "article"
-      raw["wrapper_tags"] = [object_wrapper, hash_wrapper, string_wrapper]
+      raw["wrappers"] = [object_wrapper, hash_wrapper, string_wrapper]
       node = described_class.new(raw)
 
       expect(node.render).to eq(<<~HTML.strip)

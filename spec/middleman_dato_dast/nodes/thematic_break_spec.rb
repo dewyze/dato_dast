@@ -13,15 +13,19 @@ RSpec.describe MiddlemanDatoDast::Nodes::ThematicBreak do
     end
   end
 
-  describe "#tag" do
-    it "returns 'hr'" do
-      expect(thematic_break.tag).to eq("hr")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(thematic_break.tag_info).to eq({
+        "tag" => "hr",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
-    it "returns nil" do
-      expect(thematic_break.wrapper_tags).to be_empty
+  describe "#wrappers" do
+    it "are empty" do
+      expect(thematic_break.wrappers).to be_empty
     end
   end
 

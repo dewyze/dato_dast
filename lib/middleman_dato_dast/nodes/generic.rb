@@ -5,8 +5,16 @@ module MiddlemanDatoDast
         @node["tag"]
       end
 
-      def wrapper_tags
-        @node["wrapper_tags"]
+      def css_class
+        @node["css_class"]
+      end
+
+      def wrappers
+        @node["wrappers"]
+      end
+
+      def meta
+        @node["meta"]
       end
     end
   end

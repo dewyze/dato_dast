@@ -26,46 +26,36 @@ module MiddlemanDatoDast
         @node["children"]
       end
 
-      def tag
-        config.types[type]["tag"]
-      end
-
-      def open_tag
-        return EMPTY unless tag
-
-        "<#{tag}>" + NEWLINE
-      end
-
-      def close_tag
-        return EMPTY unless tag
-
-        NEWLINE + "</#{tag}>"
-      end
-
-      def wrapper_tags
-        @node["wrapper_tags"] || Array(config.types[type]["wrappers"])
-      end
-
-      def open_wrappers
-        wrappers.map(&:open).join("")
-      end
-
-      def close_wrappers
-        wrappers.reverse.map(&:close).join("")
-      end
-
       def wrappers
-        @wrappers ||= wrapper_tags.map { |wrapper_tag| HtmlTag.parse(wrapper_tag) }
+        @node["wrappers"] || Array(config.types[type]["wrappers"])
+      end
+
+      def tag
+        @node["tag"] || config.types[type]["tag"]
       end
 
       def css_class
-        @css_class ||= @node["css_class"] || config.types[type]["css_class"]
+        @node["css_class"] || config.types[type]["css_class"]
+      end
+
+      def meta
+        @node["meta"] || config.types[type]["meta"]
+      end
+
+      def tag_info
+        {
+          "tag" => tag,
+          "css_class" => css_class,
+          "meta" => meta,
+        }
       end
 
       def render
-        html = open_tag + render_value + close_tag
-
-        open_wrappers + html + close_wrappers
+        open_wrappers +
+          html_tag.open +
+          render_value +
+          html_tag.close +
+          close_wrappers
       end
 
       def render_value
@@ -78,6 +68,24 @@ module MiddlemanDatoDast
         children.map do |child|
           Nodes.wrap(child, @links, @blocks).render
         end.join("\n").gsub(/\n+/, "\n")
+      end
+
+      private
+
+      def html_tag
+        @html_tag ||= HtmlTag.parse(tag_info)
+      end
+
+      def open_wrappers
+        wrapper_tags.map(&:open).join("")
+      end
+
+      def close_wrappers
+        wrapper_tags.reverse.map(&:close).join("")
+      end
+
+      def wrapper_tags
+        @wrapper_tags ||= wrappers.map { |wrappers| HtmlTag.parse(wrappers) }
       end
     end
   end

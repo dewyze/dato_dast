@@ -16,15 +16,19 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
     end
   end
 
-  describe "#tag" do
-    it "returns 'code'" do
-      expect(code.tag).to eq("code")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(code.tag_info).to eq({
+        "tag" => "code",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns 'pre'" do
-      expect(code.wrapper_tags).to eq(["pre"])
+      expect(code.wrappers).to eq(["pre"])
     end
   end
 

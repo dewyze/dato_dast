@@ -34,15 +34,19 @@ RSpec.describe MiddlemanDatoDast::Nodes::Root do
     end
   end
 
-  describe "#tag" do
-    it "returns 'root'" do
-      expect(root.tag).to eq("div")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(root.tag_info).to eq({
+        "tag" => "div",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns nil" do
-      expect(root.wrapper_tags).to be_empty
+      expect(root.wrappers).to be_empty
     end
   end
 

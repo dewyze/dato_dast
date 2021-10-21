@@ -20,9 +20,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::Heading do
     end
   end
 
-  describe "#tag" do
-    it "returns 'h2'" do
-      expect(heading.tag).to eq("h2")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(heading.tag_info).to eq({
+        "tag" => "h2",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
@@ -32,9 +36,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::Heading do
     end
   end
 
-  describe "#wrapper_tags" do
-    it "returns nil" do
-      expect(heading.wrapper_tags).to be_empty
+  describe "#wrappers" do
+    it "are empty" do
+      expect(heading.wrappers).to be_empty
     end
   end
 

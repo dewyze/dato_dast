@@ -24,15 +24,19 @@ RSpec.describe MiddlemanDatoDast::Nodes::ListItem do
     end
   end
 
-  describe "#tag" do
-    it "returns 'li'" do
-      expect(list.tag).to eq("li")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(list.tag_info).to eq({
+        "tag" => "li",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns nil" do
-      expect(list.wrapper_tags).to be_empty
+      expect(list.wrappers).to be_empty
     end
   end
 

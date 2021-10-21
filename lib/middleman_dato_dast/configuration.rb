@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MiddlemanDatoDast
   class Configuration
     TYPE_CONFIG = {
@@ -6,13 +8,16 @@ module MiddlemanDatoDast
       Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
       Nodes::ItemLink.type => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
       Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },
-      Nodes::List.type => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => Nodes::List },
+      Nodes::List.type => {
+        "bulleted" => { "tag" => "ul", "node" => Nodes::List },
+        "numbered" => { "tag" => "ol", "node" => Nodes::List },
+      },
       Nodes::ListItem.type => { "tag" => "li", "node" => Nodes::ListItem },
       Nodes::Paragraph.type => { "tag" => "p", "node" => Nodes::Paragraph },
       Nodes::Root.type => { "tag" => "div", "node" => Nodes::Root },
       Nodes::Span.type => { "node" => Nodes::Span },
       Nodes::ThematicBreak.type => { "tag" => "hr", "node" => Nodes::ThematicBreak },
-    }
+    }.freeze
 
     MARK_CONFIG = {
       Marks::CODE => { "tag" => "code" },
@@ -21,7 +26,7 @@ module MiddlemanDatoDast
       Marks::STRIKETHROUGH => { "tag" => "strike" },
       Marks::STRONG => { "tag" => "strong" },
       Marks::UNDERLINE => { "tag" => "u" },
-    }
+    }.freeze
 
     attr_reader :host
     attr_writer :marks, :types
@@ -46,11 +51,11 @@ module MiddlemanDatoDast
     end
 
     def marks
-      MARK_CONFIG.merge(@marks)
+      MARK_CONFIG.dup.merge(@marks)
     end
 
     def types
-      TYPE_CONFIG.merge(@types)
+      TYPE_CONFIG.dup.merge(@types)
     end
   end
 end

@@ -1,36 +1,40 @@
 RSpec.describe MiddlemanDatoDast::Nodes::Generic do
-  subject(:code) { described_class.new(raw) }
+  subject(:generic) { described_class.new(raw) }
 
   let(:raw) do
     {
       "type" => "generic",
       "tag" => "canvas",
-      "wrapper_tags" => ["div"],
+      "wrappers" => ["div"],
       "children" => [{ "type" => "span", "value" => "Hello world!" }],
     }
   end
 
   describe "#type" do
-    it "returns 'code'" do
-      expect(code.type).to eq("generic")
+    it "returns 'generic'" do
+      expect(generic.type).to eq("generic")
     end
   end
 
-  describe "#tag" do
-    it "returns 'code'" do
-      expect(code.tag).to eq("canvas")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(generic.tag_info).to eq({
+        "tag" => "canvas",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns 'pre'" do
-      expect(code.wrapper_tags).to eq(["div"])
+      expect(generic.wrappers).to eq(["div"])
     end
   end
 
   describe "#render" do
     it "returns the html string" do
-      expect(code.render).to eq(<<~HTML.strip)
+      expect(generic.render).to eq(<<~HTML.strip)
         <div>
         <canvas>
         Hello world!

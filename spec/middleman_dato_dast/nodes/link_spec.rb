@@ -33,9 +33,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
     end
   end
 
-  describe "#tag" do
-    it "returns 'a'" do
-      expect(link.tag).to eq("a")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(link.tag_info).to eq({
+        "tag" => "a",
+        "meta" => meta_fields,
+        "css_class" => nil,
+      })
     end
   end
 
@@ -250,9 +254,9 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
     end
   end
 
-  describe "#wrapper_tags" do
-    it "returns nil" do
-      expect(link.wrapper_tags).to be_empty
+  describe "#wrappers" do
+    it "are empty" do
+      expect(link.wrappers).to be_empty
     end
   end
 

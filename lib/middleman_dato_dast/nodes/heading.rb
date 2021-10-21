@@ -6,8 +6,8 @@ module MiddlemanDatoDast
       end
 
       def tag
-        base_tag = MiddlemanDatoDast.configuration.types[type]["tag"]
-        @tag = base_tag.gsub(/#/, level.to_s)
+        base_tag = super
+        base_tag.gsub(/#/, level.to_s)
       end
     end
   end

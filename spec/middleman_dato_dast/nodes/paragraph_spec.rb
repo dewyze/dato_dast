@@ -19,15 +19,19 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     end
   end
 
-  describe "#tag" do
-    it "returns 'p'" do
-      expect(paragraph.tag).to eq("p")
+  describe "#tag_info" do
+    it "returns the tag info" do
+      expect(paragraph.tag_info).to eq({
+        "tag" => "p",
+        "meta" => nil,
+        "css_class" => nil,
+      })
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns nil" do
-      expect(paragraph.wrapper_tags).to be_empty
+      expect(paragraph.wrappers).to be_empty
     end
   end
 

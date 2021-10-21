@@ -9,7 +9,10 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::Link },
-        "list" => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => MiddlemanDatoDast::Nodes::List },
+        "list" => {
+          "bulleted" => { "tag" => "ul", "node" => MiddlemanDatoDast::Nodes::List },
+          "numbered" => { "tag" => "ol", "node" => MiddlemanDatoDast::Nodes::List },
+        },
         "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
         "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
         "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
@@ -33,7 +36,10 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "button", "node" => klass },
-        "list" => { "tag" => { "bulleted" => "ul", "numbered" => "ol" }, "node" => MiddlemanDatoDast::Nodes::List },
+        "list" => {
+          "bulleted" => { "tag" => "ul", "node" => MiddlemanDatoDast::Nodes::List },
+          "numbered" => { "tag" => "ol", "node" => MiddlemanDatoDast::Nodes::List },
+        },
         "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
         "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
         "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },

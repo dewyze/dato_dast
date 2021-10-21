@@ -30,25 +30,37 @@ RSpec.describe MiddlemanDatoDast::Nodes::List do
     end
   end
 
-  describe "#tag" do
-    it "returns 'ul' if style is 'bulleted'" do
-      expect(list.tag).to eq("ul")
+  describe "#tag_info" do
+    context "with style 'bulleted'" do
+      it "returns the tag info for " do
+        expect(list.tag_info).to eq({
+          "tag" => "ul",
+          "meta" => nil,
+          "css_class" => nil,
+        })
+      end
     end
 
-    it "returns 'ol' if style is 'numbered'" do
-      list = described_class.new({
-        "type" => "list",
-        "style" => "numbered",
-        "children" => [],
-      })
+    context "with style 'numbered'" do
+      it "returns the tag info for " do
+        list = described_class.new({
+          "type" => "list",
+          "style" => "numbered",
+          "children" => [],
+        })
 
-      expect(list.tag).to eq("ol")
+        expect(list.tag_info).to eq({
+          "tag" => "ol",
+          "meta" => nil,
+          "css_class" => nil,
+        })
+      end
     end
   end
 
-  describe "#wrapper_tags" do
+  describe "#wrappers" do
     it "returns nil" do
-      expect(list.wrapper_tags).to be_empty
+      expect(list.wrappers).to be_empty
     end
   end
 
