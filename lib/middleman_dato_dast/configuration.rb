@@ -3,6 +3,7 @@
 module MiddlemanDatoDast
   class Configuration
     TYPE_CONFIG = {
+      Nodes::Block.type => { "node" => Nodes::Block },
       Nodes::Blockquote.type => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
       Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
       Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
@@ -30,12 +31,13 @@ module MiddlemanDatoDast
 
     attr_reader :host
     attr_writer :marks, :types
-    attr_accessor :item_links, :smart_links
+    attr_accessor :blocks, :item_links, :smart_links
 
     def initialize
       @marks = {}
       @types = {}
       @item_links = {}
+      @blocks = {}
       @smart_links = true
       @host = nil
     end
@@ -51,11 +53,11 @@ module MiddlemanDatoDast
     end
 
     def marks
-      MARK_CONFIG.dup.merge(@marks)
+      @memoized_marks ||= MARK_CONFIG.dup.merge(@marks)
     end
 
     def types
-      TYPE_CONFIG.dup.merge(@types)
+      @memoized_typed ||= TYPE_CONFIG.dup.merge(@types)
     end
   end
 end

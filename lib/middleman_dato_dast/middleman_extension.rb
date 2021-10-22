@@ -6,6 +6,7 @@ module MiddlemanDatoDast
     option :types, {}, "Configuration hash for a given block node type"
     option :marks, {}, "Configuration hash for a given mark"
     option :item_links, {}, "Configuration hash item links types and the url field"
+    option :blocks, {}, "Configuration hash for blocks"
     option :smart_links, true, "Open Link items in new windows and ItemLinks in the same window"
     option :host, nil, "Host for your site, used in conjunction with 'smart_links' option"
 
@@ -16,6 +17,7 @@ module MiddlemanDatoDast
         config.item_links = options[:item_links]
         config.smart_links = options[:smart_links]
         config.host = options[:host]
+        config.blocks = options[:blocks]
       end
     end
 

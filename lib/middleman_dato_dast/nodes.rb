@@ -14,6 +14,7 @@ require "middleman_dato_dast/nodes/list_item"
 require "middleman_dato_dast/nodes/paragraph"
 require "middleman_dato_dast/nodes/root"
 require "middleman_dato_dast/nodes/thematic_break"
+require "middleman_dato_dast/nodes/block"
 
 
 module MiddlemanDatoDast
@@ -22,7 +23,7 @@ module MiddlemanDatoDast
       # TODO check if type exists
 
       type = value["type"]
-      node_class = MiddlemanDatoDast.configuration.types[type]["node"]
+      node_class = value["node"] || MiddlemanDatoDast.configuration.types[type]["node"]
       node_class.new(value, links, blocks)
     end
   end
