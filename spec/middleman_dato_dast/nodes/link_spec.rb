@@ -26,6 +26,13 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
   let(:internal_url) { "https://www.datocms.com/link" }
   let(:local_url) { "link" }
 
+  def attributes(link)
+    [{ "id" => "href", "value" => link }]
+  end
+
+  def new_window_attributes(link)
+    attributes(link) + meta_fields
+  end
 
   describe "#type" do
     it "returns 'link'" do
@@ -37,7 +44,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
     it "returns the tag info" do
       expect(link.tag_info).to eq({
         "tag" => "a",
-        "meta" => meta_fields,
+        "meta" => new_window_attributes(internal_url),
         "css_class" => nil,
       })
     end
@@ -153,7 +160,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["url"] = external_url
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq(new_window_attributes(raw["url"]))
       end
 
       it "returns new window fields if they are explicit" do
@@ -161,21 +168,25 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["meta"] = meta_fields
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq([
+          { "id" => "href", "value" => "/link" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ])
       end
 
       it "does not return new window fields for absolute local url" do
         raw["url"] = internal_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "/link" }])
       end
 
       it "does not return new window fields for a local url" do
         raw["url"] = local_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "/link" }])
       end
     end
 
@@ -190,7 +201,11 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["url"] = external_url
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq([
+          { "id" => "href", "value" => "https://www.google.com/link" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ])
       end
 
       it "returns new window fields if they are explicit" do
@@ -198,21 +213,29 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["meta"] = meta_fields
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq([
+          { "id" => "href", "value" => "https://www.datocms.com/link" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ])
       end
 
       it "returns new window fields for absolute local url" do
         raw["url"] = internal_url
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq([
+          { "id" => "href", "value" => "https://www.datocms.com/link" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ])
       end
 
       it "does not return new window fields for a local url" do
         raw["url"] = local_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "/link" }])
       end
     end
 
@@ -227,7 +250,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["url"] = external_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "https://www.google.com/link" }])
       end
 
       it "returns new window fields if they are explicit" do
@@ -235,21 +258,25 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
         raw["meta"] = meta_fields
         link = described_class.new(raw)
 
-        expect(link.meta).to eq(meta_fields)
+        expect(link.meta).to eq([
+          { "id" => "href", "value" => "https://www.datocms.com/link" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ])
       end
 
       it "returns new window fields for absolute local url" do
         raw["url"] = internal_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "https://www.datocms.com/link" }])
       end
 
       it "does not return new window fields for a local url" do
         raw["url"] = local_url
         link = described_class.new(raw)
 
-        expect(link.meta).to be_empty
+        expect(link.meta).to eq([{ "id" => "href", "value" => "/link" }])
       end
     end
   end

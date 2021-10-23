@@ -36,7 +36,11 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
     it "returns the tag info" do
       expect(item_link.tag_info).to eq({
         "tag" => "a",
-        "meta" => meta_fields,
+        "meta" => [
+          { "id" => "href", "value" => "/my-cool-page" },
+          { "id" => "rel", "value" => "nofollow" },
+          { "id" => "target", "value" => "_blank" },
+        ],
         "css_class" => nil,
       })
     end
@@ -57,6 +61,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::ItemLink do
   describe "#meta" do
     it "returns the meta fields" do
       meta=  [
+        { "id" => "href", "value" => "/my-cool-page" },
         { "id" => "rel", "value" => "nofollow" },
         { "id" => "target", "value" => "_blank" },
       ]

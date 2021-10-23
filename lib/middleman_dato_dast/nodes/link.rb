@@ -11,31 +11,14 @@ module MiddlemanDatoDast
       end
 
       def meta
-        fields = @node["meta"] || []
+        fields = @node["meta"].dup || []
+        fields.prepend({ "id" => "href", "value" => path })
 
         new_window? ? (fields + NEW_WINDOW_META).uniq : fields
       end
 
-      def href
-        " href=\"#{path}\""
-      end
-
       def path
         local_url || uri.to_s
-      end
-
-      def meta_attributes
-        meta.inject(href) do |html, pair|
-          html + " #{pair["id"]}=\"#{pair["value"]}\""
-        end
-      end
-
-      def render
-        <<~HTML.chomp
-        <#{tag}#{meta_attributes}>
-        #{render_children}
-        </#{tag}>
-        HTML
       end
 
       private
