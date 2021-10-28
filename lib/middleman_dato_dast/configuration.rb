@@ -6,6 +6,7 @@ module MiddlemanDatoDast
       Nodes::Block.type => { "node" => Nodes::Block },
       Nodes::Blockquote.type => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
       Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
+      Nodes::Generic.type => { "node" => Nodes::Generic },
       Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
       Nodes::ItemLink.type => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
       Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },

@@ -19,12 +19,12 @@ require "middleman_dato_dast/nodes/block"
 
 module MiddlemanDatoDast
   module Nodes
-    def self.wrap(value, links = [], blocks = [])
+    def self.wrap(value, links = [], blocks = [], node_config = nil)
       # TODO check if type exists
 
       type = value["type"]
       node_class = value["node"] || MiddlemanDatoDast.configuration.types[type]["node"]
-      node_class.new(value, links, blocks)
+      node_class.new(value, links, blocks, node_config)
     end
   end
 end

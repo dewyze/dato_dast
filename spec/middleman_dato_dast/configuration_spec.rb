@@ -4,8 +4,10 @@ RSpec.describe MiddlemanDatoDast::Configuration do
   describe "#types" do
     it "returns the defaults" do
       defaults = {
+        "block" => { "node" => MiddlemanDatoDast::Nodes::Block },
         "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
+        "generic" => { "node" => MiddlemanDatoDast::Nodes::Generic },
         "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::Link },
@@ -31,8 +33,10 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "newType" => { "tag" => "div" },
       }
       expected_types = {
+        "block" => { "node" => MiddlemanDatoDast::Nodes::Block },
         "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
+        "generic" => { "node" => MiddlemanDatoDast::Nodes::Generic },
         "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "button", "node" => klass },

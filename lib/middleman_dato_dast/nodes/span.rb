@@ -10,7 +10,7 @@ module MiddlemanDatoDast
       end
 
       def wrappers
-        marks.map { |mark| config.marks[mark] }
+        Array.wrap(super) + marks.map { |mark| config.marks[mark] }
       end
 
       def render_value

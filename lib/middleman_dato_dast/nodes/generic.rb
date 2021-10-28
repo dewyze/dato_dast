@@ -10,7 +10,7 @@ module MiddlemanDatoDast
       end
 
       def wrappers
-        @node["wrappers"]
+        Array.wrap(@node["wrappers"])
       end
 
       def meta

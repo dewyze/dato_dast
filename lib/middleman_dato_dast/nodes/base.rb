@@ -8,10 +8,11 @@ module MiddlemanDatoDast
         name.demodulize.camelize(:lower)
       end
 
-      def initialize(node, links = [], blocks = [])
+      def initialize(node, links = [], blocks = [], node_config = nil)
         @node = node
         @links = links
         @blocks = blocks
+        @node_config = node_config
       end
 
       def config
@@ -27,19 +28,23 @@ module MiddlemanDatoDast
       end
 
       def wrappers
-        @node["wrappers"] || Array(config.types[type]["wrappers"])
+        @node["wrappers"] || Array.wrap(node_config["wrappers"])
       end
 
       def tag
-        @node["tag"] || config.types[type]["tag"]
+        @node["tag"] || node_config["tag"]
       end
 
       def css_class
-        @node["css_class"] || config.types[type]["css_class"]
+        @node["css_class"] || node_config["css_class"]
       end
 
       def meta
-        @node["meta"] || config.types[type]["meta"]
+        @node["meta"] || node_config["meta"]
+      end
+
+      def node_config
+        @node_config ||= config.types[type]
       end
 
       def tag_info

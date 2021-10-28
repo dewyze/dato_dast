@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "active_support/core_ext/array"
 require "active_support/core_ext/string"
 require "active_support/concern"
 require_relative "middleman_dato_dast/version"
