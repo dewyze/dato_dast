@@ -139,7 +139,7 @@ This would use the `<i>` tag instead of `<emphasis>` and wrap that `<i>` tag wit
 
 <details>
 
-This is the configuration use for all of the default types. Each type configuration consists of the type key and a [`Node`](#node) value. Most of them have an html `tag` defined as well, and can take a [wrapper](#wrappers).
+This is the configuration use for all of the default types. Each type configuration consists of the type key and a [`Node`](#nodes) value. Most of them have an html `tag` defined as well, and can take a [wrapper](#wrappers).
 
 The default configuration is:
 
@@ -196,7 +196,7 @@ Blocks should be configured on a per-block basis. See the [Block](#blocks) secti
 
 <details>
 
-Represents the [DatoCMS `blockquote`](https://www.datocms.com/docs/structured-text/dast#block) node.
+Represents the [DatoCMS `blockquote`](https://www.datocms.com/docs/structured-text/dast#blockquote) node.
 
 With the following dast node:
 
@@ -250,7 +250,7 @@ Be yourself; everyone else is taken.
 
 <details>
 
-Represents the [datocms `code`](https://www.datocms.com/docs/structured-text/dast#code) node.
+Represents the [DatoCMS `code`](https://www.datocms.com/docs/structured-text/dast#code) node.
 
 With the following dast node:
 
@@ -289,7 +289,7 @@ This node is not a part of the [DatoCMS Dast](https://www.datocms.com/docs/struc
 
 <details>
 
-Represents the [datocms `heading`](https://www.datocms.com/docs/structured-text/dast#heading) node.
+Represents the [DatoCMS `heading`](https://www.datocms.com/docs/structured-text/dast#heading) node.
 
 With the following dast node:
 
@@ -322,7 +322,7 @@ One note about the `Heading` node, is that it accepts a tag with a `#` symbol wh
 
 <details>
 
-Represents the [datocms `itemLink`](https://www.datocms.com/docs/structured-text/dast#itemLink) node.
+Represents the [DatoCMS `itemLink`](https://www.datocms.com/docs/structured-text/dast#itemLink) node.
 
 The `itemLink` node requires a configuration to specify what field value should be called on the itemLink object to generate the url. It defaults to `slug` as the is the default name DatoCMS gives that field, but can be configured to anything.
 
@@ -347,7 +347,7 @@ With the following dast node:
 
 And an `links` array of:
 
-```json
+```javascript
 [{ id: "38945648", slug: "my-cool-page", item_type: "page" }]
 ```
 
@@ -365,7 +365,7 @@ This would be rendered using the `itemLink` node, which would render as:
 
 <details>
 
-Represents the [datocms `link`](https://www.datocms.com/docs/structured-text/dast#link) node.
+Represents the [dato `link`](https://www.datocms.com/docs/structured-text/dast#link) node.
 
 With the following dast node:
 
@@ -400,7 +400,7 @@ This would be rendered using the `link` node, which would render as:
 
 <details>
 
-Represents the [datocms `list`](https://www.datocms.com/docs/structured-text/dast#list) node.
+Represents the [DatoCMS `list`](https://www.datocms.com/docs/structured-text/dast#list) node.
 
 The `list` node is special in that it has two subkeys of `bulleted` or `ordered` and each of those has its own node configuration.
 
@@ -447,7 +447,7 @@ This would be rendered using the `List` node, which would render as:
 
 <details>
 
-Represents the [datocms `listItem`](https://www.datocms.com/docs/structured-text/dast#listItem) node.
+Represents the [DatoCMS `listItem`](https://www.datocms.com/docs/structured-text/dast#listItem) node.
 
 With the following dast node:
 
@@ -484,7 +484,7 @@ This would be rendered using the `ListItem` node, which would render as:
 
 <details>
 
-Represents the [datocms `paragraph`](https://www.datocms.com/docs/structured-text/dast#paragraph) node.
+Represents the [DatoCMS `paragraph`](https://www.datocms.com/docs/structured-text/dast#paragraph) node.
 
 With the following dast node:
 
@@ -514,7 +514,7 @@ This would be rendered using the `Paragraph` node, which would render as:
 
 <details>
 
-Represents the [datocms `root`](https://www.datocms.com/docs/structured-text/dast#root) node.
+Represents the [DatoCMS `root`](https://www.datocms.com/docs/structured-text/dast#root) node.
 
 With the following dast node:
 
@@ -564,7 +564,7 @@ This would be rendered using the `Root` node, which would render as:
 
 <details>
 
-Represents the [datocms `span`](https://www.datocms.com/docs/structured-text/dast#span) node.
+Represents the [DatoCMS `span`](https://www.datocms.com/docs/structured-text/dast#span) node.
 
 With the following dast node:
 
@@ -592,7 +592,7 @@ This would be rendered using the `attributedquote` node, which would render as:
 
 <details>
 
-Represents the [datocms `blockquote`](https://www.datocms.com/docs/structured-text/dast#block) node.
+Represents the [DatoCMS `blockquote`](https://www.datocms.com/docs/structured-text/dast#block) node.
 
 With the following dast node:
 
