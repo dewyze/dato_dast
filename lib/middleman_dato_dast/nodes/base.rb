@@ -102,7 +102,7 @@ module MiddlemanDatoDast
       end
 
       def wrapper_tags
-        @wrapper_tags ||= wrappers.map { |wrappers| HtmlTag.parse(wrappers) }
+        @wrapper_tags ||= wrappers.map { |wrappers| HtmlTag.parse(wrappers, proc_object) }
       end
 
       def proc_object

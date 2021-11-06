@@ -3,7 +3,7 @@ module MiddlemanDatoDast
     EMPTY = ""
     NEWLINE = "\n"
 
-    def self.parse(tag)
+    def self.parse(tag, object = nil)
       case tag
       when String
         new(tag)
@@ -12,7 +12,7 @@ module MiddlemanDatoDast
         css_class = tag["css_class"]
         meta = tag["meta"]
 
-        HtmlTag.new(html_tag, { "css_class" => css_class, "meta" => meta })
+        HtmlTag.new(html_tag, { "css_class" => css_class, "meta" => meta, "object" => object })
       when HtmlTag
         tag
       when nil
@@ -26,33 +26,48 @@ module MiddlemanDatoDast
       @tag = tag
       @css_class = options["css_class"] || ""
       @meta = options["meta"] || {}
+      @object = options["object"]
     end
 
     def open
-      return EMPTY unless @tag
+      return EMPTY unless tag
 
-      "<#{@tag}#{css_class}#{meta}>" + NEWLINE
+      "<#{tag}#{css_class}#{meta}>" + NEWLINE
     end
 
     def close
-      return EMPTY unless @tag
+      return EMPTY unless tag
 
-      NEWLINE + "</#{@tag}>"
+      NEWLINE + "</#{tag}>"
     end
 
     private
 
-    def css_class
-      return "" unless @css_class.present?
+    def tag
+      if @tag.is_a?(Proc)
+        @tag.call(@object)
+      else
+        @tag
+      end
+    end
 
-      " class=\"#{@css_class}\""
+    def css_class
+      return "" if @css_class.blank?
+
+      klass = @css_class.is_a?(Proc) ? @css_class.call(@object) : @css_class
+
+      " class=\"#{klass}\""
     end
 
     def meta
-      return "" if @meta.empty?
+      return "" if @meta.blank?
 
-      @meta.inject("") do |html, pair|
-        html + " #{pair["id"]}=\"#{pair["value"]}\""
+      if @meta.is_a?(Proc)
+        " " + @meta.call(@object)
+      else
+        @meta.reduce("") do |html, pair|
+          html + " #{pair["id"]}=\"#{pair["value"]}\""
+        end
       end
     end
   end

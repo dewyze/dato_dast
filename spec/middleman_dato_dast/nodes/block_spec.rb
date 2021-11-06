@@ -270,7 +270,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
         "hero_gallery" => {
           "wrappers" => [{
             "tag" => "div",
-            "css_class" => "hero-gallery",
+            "css_class" => ->(block) { block[:item_type] },
             "meta" => [{ "id" => "data-value", "value" => "1" }],
           }],
           "structure" => [
@@ -355,7 +355,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
       block = described_class.new(raw, [], [hero_gallery("1")])
 
       expect(block.render).to eq(<<~HTML.strip)
-        <div class="hero-gallery" data-value="1">
+        <div class="hero_gallery" data-value="1">
         <div class="hero-wrapper" data-value="2">
         <div style="background-image: url('https://www.datocms-assets.com/1110/image.png')">
         <h1>This is my hero title</h1>

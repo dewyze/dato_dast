@@ -620,9 +620,10 @@ The wrappers are rendered from the outside in, so the first wrapper will wrap th
 
 A wrapper is made up of 3 parts: `tag`, `css_class`, and `meta`.
 
-- `tag`: **Required**. The default html tag to use.
-- `css_class`: **Optional**. This is a string that is used in the `class=""` attribute of the tag.
-- `meta`: **Optional**. This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node.
+- `tag`: **Required**. The default html tag to use, or a proc that receive a node or block.
+- `css_class`: **Optional**. This is a string that is used in the `class=""` attribute of the tag, or a proc that receive a node or block.
+- `meta`: **Optional**. This is an array of hashes matching the dast meta
+structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node, or a proc that receive a node or block.
   - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
 
 ## Nodes

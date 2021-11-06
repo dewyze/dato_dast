@@ -80,7 +80,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
       object_wrapper = MiddlemanDatoDast::HtmlTag.new(
         "body", {
           "css_class" => "body--wide mx-auto",
-          "meta" => [{ "id" => "click", "value" => "hide" }],
+          "meta" => ->(node) { "click=\"hide\"" },
         },
       )
       hash_wrapper = {
