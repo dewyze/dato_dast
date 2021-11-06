@@ -87,6 +87,22 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
         "css_class" => "blue",
       })
     end
+
+    it "returns the tag info when procs are provided" do
+      configure({
+        "image" => {
+          "tag" => ->(block) { "h1" },
+          "css_class" => ->(block) { block[:item_type] },
+          "render_value" => ->(_b) { "" },
+        },
+      })
+
+      expect(block.tag_info).to eq({
+        "tag" => "h1",
+        "css_class" => "image",
+        "meta" => nil,
+      })
+    end
   end
 
   describe "#children" do

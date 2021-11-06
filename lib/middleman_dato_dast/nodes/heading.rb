@@ -5,10 +5,10 @@ module MiddlemanDatoDast
         @node["level"]
       end
 
-      def tag
-        base_tag = super
-        base_tag.gsub(/#/, level.to_s)
-      end
+      # def tag
+      #   base_tag = super
+      #   base_tag.gsub(/#/, level.to_s)
+      # end
     end
   end
 end

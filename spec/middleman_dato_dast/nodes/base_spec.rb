@@ -23,6 +23,32 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     it "returns 'p'" do
       expect(node.tag).to eq("p")
     end
+
+    it "calls a proc if provided" do
+      MiddlemanDatoDast.configure do |config|
+        config.types[node.type] = {
+          "tag" => ->(node) { "h1" },
+        }
+      end
+
+      expect(node.tag).to eq("h1")
+    end
+  end
+
+  describe "#css_class" do
+    it "returns 'p'" do
+      expect(node.css_class).to be_nil
+    end
+
+    it "calls a proc if provided" do
+      MiddlemanDatoDast.configure do |config|
+        config.types[node.type] = {
+          "css_class" => ->(node) { node.type },
+        }
+      end
+
+      expect(node.css_class).to eq("paragraph")
+    end
   end
 
   describe "#children" do

@@ -32,15 +32,27 @@ module MiddlemanDatoDast
       end
 
       def tag
-        @node["tag"] || node_config["tag"]
+        if node_config && node_config["tag"].is_a?(Proc)
+          node_config["tag"].call(proc_object)
+        else
+          @node["tag"] || node_config["tag"]
+        end
       end
 
       def css_class
-        @node["css_class"] || node_config["css_class"]
+        if node_config && node_config["css_class"].is_a?(Proc)
+          node_config["css_class"].call(proc_object)
+        else
+          @node["css_class"] || node_config["css_class"]
+        end
       end
 
       def meta
-        @node["meta"] || node_config["meta"]
+        if node_config && node_config["meta"].is_a?(Proc)
+          node_config["meta"].call(proc_object)
+        else
+          @node["meta"] || node_config["meta"]
+        end
       end
 
       def node_config
@@ -91,6 +103,10 @@ module MiddlemanDatoDast
 
       def wrapper_tags
         @wrapper_tags ||= wrappers.map { |wrappers| HtmlTag.parse(wrappers) }
+      end
+
+      def proc_object
+        self
       end
     end
   end

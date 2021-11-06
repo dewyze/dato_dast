@@ -72,6 +72,8 @@ MiddlemanDatoDast.configure do |config|
 end
 ```
 
+See [`itemLink`](#itemlink) for more details.
+
 </details>
 
 ### `config.marks`
@@ -113,7 +115,7 @@ It would normally render as:
 </highlight>
 ```
 
-If we used the following configuration: 
+If we used the following configuration:
 
 ```ruby
 MiddlemanDatoDast.configure do |config|
@@ -165,10 +167,10 @@ TYPE_CONFIG = {
 ```
 
 Each type configuration takes the following keys:
-- `tag`: The default html tag to use. `nil` can be used to not use a key.
+- `tag`: The default html tag to use. `nil` can be used to not use a key. Additionally you can provide a lambda that takes the Node object.
 - `node`: This represents the Node object used for rendering. See [Nodes](#nodes) for more details.
-- `css_class`: This is a string that is used in the `class=""` attribute of the tag.
-- `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node.
+- `css_class`: This is a string that is used in the `class=""` attribute of the tag. Additionally you can provide a lambda that takes the Node object.
+- `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
   - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
 - `wrappers`: This represents additional wrappers use to surrounded the given node type. See [Wrappers](#wrappers) for more details.
 
@@ -618,7 +620,7 @@ The wrappers are rendered from the outside in, so the first wrapper will wrap th
 
 A wrapper is made up of 3 parts: `tag`, `css_class`, and `meta`.
 
-- `tag`: **Required**. The default html tag to use. 
+- `tag`: **Required**. The default html tag to use.
 - `css_class`: **Optional**. This is a string that is used in the `class=""` attribute of the tag.
 - `meta`: **Optional**. This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node.
   - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
@@ -675,6 +677,12 @@ Additionally, the `block` type has a specific render method for the complex rend
 ## Blocks
 
 Blocks are the most powerful parts of structured text. We can take objects and render them in a specific way.
+
+Blocks can take the same values as nodes. One difference with blocks is that the block object is provided to the proc instead of the node when a Proc is provided.
+
+- `tag`
+- `css_class`
+- `meta`
 
 The block configuration takes `item_type` value and you must provide one of three methods for rendering:
 
@@ -931,7 +939,7 @@ MiddlemanDatoDast.configure do |config|
     "photo" => {
       "tag" => "div",
       "css_class" => "img",
-      "render_value" => ->(block) { "<img src='#{block[:url]}' />" } 
+      "render_value" => ->(block) { "<img src='#{block[:url]}' />" }
     }
   }
 end
@@ -1013,7 +1021,7 @@ MiddlemanDatoDast.configure do |config|
     "photo" => {
       "tag" => "div",
       "css_class" => "img",
-      "render_value" => ->(block) { "<img src='#{block[:url]}' />" } 
+      "render_value" => ->(block) { "<img src='#{block[:url]}' />" }
     }
   }
 end

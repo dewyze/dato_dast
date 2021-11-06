@@ -7,13 +7,10 @@ module MiddlemanDatoDast
       Nodes::Blockquote.type => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
       Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
       Nodes::Generic.type => { "node" => Nodes::Generic },
-      Nodes::Heading.type => { "tag" => "h#", "node" => Nodes::Heading },
+      Nodes::Heading.type => { "tag" => ->(node) { "h#{node.level}" }, "node" => Nodes::Heading },
       Nodes::ItemLink.type => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
       Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },
-      Nodes::List.type => {
-        "bulleted" => { "tag" => "ul", "node" => Nodes::List },
-        "numbered" => { "tag" => "ol", "node" => Nodes::List },
-      },
+      Nodes::List.type => { "tag" => ->(node) { node.style == "bulleted" ? "ul" : "ol" }, "node" => Nodes::List },
       Nodes::ListItem.type => { "tag" => "li", "node" => Nodes::ListItem },
       Nodes::Paragraph.type => { "tag" => "p", "node" => Nodes::Paragraph },
       Nodes::Root.type => { "tag" => "div", "node" => Nodes::Root },
@@ -85,6 +82,8 @@ module MiddlemanDatoDast
       invalid_blocks = []
 
       blocks_config.each do |block, block_config|
+        next if block_config.is_a?(Proc)
+
         intersection = block_config.keys & BLOCK_RENDER_KEYS
         invalid_blocks << block unless intersection.length == 1
       end

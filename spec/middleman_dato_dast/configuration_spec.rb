@@ -8,13 +8,8 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
         "generic" => { "node" => MiddlemanDatoDast::Nodes::Generic },
-        "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::Link },
-        "list" => {
-          "bulleted" => { "tag" => "ul", "node" => MiddlemanDatoDast::Nodes::List },
-          "numbered" => { "tag" => "ol", "node" => MiddlemanDatoDast::Nodes::List },
-        },
         "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
         "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
         "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
@@ -22,7 +17,21 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "thematicBreak" => { "tag" => "hr", "node" => MiddlemanDatoDast::Nodes::ThematicBreak }
       }
 
-      expect(config.types).to eq(defaults)
+      expect(config.types).to include(defaults)
+    end
+
+    it "returns the correct values for headings" do
+      heading_config = config.types["heading"]
+
+      expect(heading_config["node"]).to eq(MiddlemanDatoDast::Nodes::Heading)
+      expect(heading_config["tag"]).to be_a(Proc)
+    end
+
+    it "returns the correct values for bulleted lists" do
+      list_config = config.types["list"]
+
+      expect(list_config["node"]).to eq(MiddlemanDatoDast::Nodes::List)
+      expect(list_config["tag"]).to be_a(Proc)
     end
 
     it "merges in new values" do
@@ -37,13 +46,8 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "blockquote" => { "tag" => "blockquote", "node" => MiddlemanDatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => MiddlemanDatoDast::Nodes::Code, "wrappers" => ["pre"] },
         "generic" => { "node" => MiddlemanDatoDast::Nodes::Generic },
-        "heading" => { "tag" => "h#", "node" => MiddlemanDatoDast::Nodes::Heading },
         "itemLink" => { "tag" => "a", "node" => MiddlemanDatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "button", "node" => klass },
-        "list" => {
-          "bulleted" => { "tag" => "ul", "node" => MiddlemanDatoDast::Nodes::List },
-          "numbered" => { "tag" => "ol", "node" => MiddlemanDatoDast::Nodes::List },
-        },
         "listItem" => { "tag" => "li", "node" => MiddlemanDatoDast::Nodes::ListItem },
         "paragraph" => { "tag" => "p", "node" => MiddlemanDatoDast::Nodes::Paragraph },
         "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
@@ -54,24 +58,23 @@ RSpec.describe MiddlemanDatoDast::Configuration do
 
       config.types = new_types
 
-      expect(config.types).to eq(expected_types)
+      expect(config.types).to include(expected_types)
     end
   end
 
   describe "#add_wrapper" do
     it "adds a wrapper for a given type" do
-      config.add_wrapper("heading", {
+      config.add_wrapper("span", {
         "tag" => "div",
-        "css_class" => "heading",
+        "css_class" => "text",
         "meta" => { "id" => "data-value", "value" => "1" },
       })
 
-      expect(config.types["heading"]).to eq(
-        "tag" => "h#",
-        "node" => MiddlemanDatoDast::Nodes::Heading,
+      expect(config.types["span"]).to eq(
+        "node" => MiddlemanDatoDast::Nodes::Span,
         "wrappers" => [{
           "tag" => "div",
-          "css_class" => "heading",
+          "css_class" => "text",
           "meta" => { "id" => "data-value", "value" => "1" },
         }],
       )

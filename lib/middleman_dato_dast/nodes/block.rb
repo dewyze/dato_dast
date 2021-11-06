@@ -115,6 +115,10 @@ module MiddlemanDatoDast
           "children" => Array.wrap(block[field]).map { |child_block| build_block(child_block) }
         }
       end
+
+      def proc_object
+        block
+      end
     end
   end
 end

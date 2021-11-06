@@ -4,10 +4,6 @@ module MiddlemanDatoDast
       def style
         @node["style"]
       end
-
-      def tag
-        config.types[type][style]["tag"]
-      end
     end
   end
 end
