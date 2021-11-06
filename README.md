@@ -28,7 +28,7 @@ Or you can provide configuration
 
 ```ruby
 activate :dato_dast do |config|
-    # See "Configuration  Below
+    # See "Configuration" Below
 end
 ```
 
@@ -61,6 +61,7 @@ Host for your site, used in conjunction with 'smart_links' option.
 ### `config.item_links`, default: `{},`
 
 <details>
+
 If you are using [`itemLinks`](https://www.datocms.com/docs/structured-text/dast#itemLink), you can use this configuration hash to define which field to call on the item to determine the url. For example, if you have a `page` model and a `slug` field that contains the url, you would use:
 
 ```ruby
@@ -70,11 +71,13 @@ MiddlemanDatoDast.configure do |config|
   }
 end
 ```
+
 </details>
 
 ### `config.marks`
 
 <details>
+
 There are [six marks](`strong`, `code`, `emphasis`, `underline`, `strikethrough` and `highlight`) defined in the DatoCMS Dast spec.
 
 The `config.marks` option allows you to customize the mark that is used, as well as add [`wrappers`](#wrappers) for a given tag.
@@ -129,11 +132,13 @@ This would use the `<i>` tag instead of `<emphasis>` and wrap that `<i>` tag wit
   </div>
 </highlight>
 ```
+
 </details>
 
 ### `config.types`
 
 <details>
+
 This is the configuration use for all of the default types. Each type configuration consists of the type key and a [`Node`](#node) value. Most of them have an html `tag` defined as well, and can take a [wrapper](#wrappers).
 
 The default configuration is:
@@ -170,6 +175,7 @@ Each type configuration takes the following keys:
 Some types have specific additional values.
 
 See the individual [type configuration](#types) for each type.
+
 </details>
 
 ## Types
@@ -179,14 +185,17 @@ Each node type may have its own configuration values and render in a unique way.
 ### `block`
 
 <details>
+
 Represents the [DatoCMS `block`](https://www.datocms.com/docs/structured-text/dast#block) node.
 
 Blocks should be configured on a per-block basis. See the [Block](#blocks) section on how to configure specific blocks.
+
 </details>
 
 ### `blockquote`
 
 <details>
+
 Represents the [DatoCMS `blockquote`](https://www.datocms.com/docs/structured-text/dast#block) node.
 
 With the following dast node:
@@ -234,11 +243,13 @@ Be yourself; everyone else is taken.
 </p>
 </blockquote>
 ```
+
 </details>
 
 ### `code`
 
 <details>
+
 Represents the [datocms `code`](https://www.datocms.com/docs/structured-text/dast#code) node.
 
 With the following dast node:
@@ -277,6 +288,7 @@ This node is not a part of the [DatoCMS Dast](https://www.datocms.com/docs/struc
 ### `heading`
 
 <details>
+
 Represents the [datocms `heading`](https://www.datocms.com/docs/structured-text/dast#heading) node.
 
 With the following dast node:
@@ -309,6 +321,7 @@ One note about the `Heading` node, is that it accepts a tag with a `#` symbol wh
 ### `itemLink`
 
 <details>
+
 Represents the [datocms `itemLink`](https://www.datocms.com/docs/structured-text/dast#itemLink) node.
 
 The `itemLink` node requires a configuration to specify what field value should be called on the itemLink object to generate the url. It defaults to `slug` as the is the default name DatoCMS gives that field, but can be configured to anything.
@@ -351,6 +364,7 @@ This would be rendered using the `itemLink` node, which would render as:
 ### `link`
 
 <details>
+
 Represents the [datocms `link`](https://www.datocms.com/docs/structured-text/dast#link) node.
 
 With the following dast node:
@@ -385,6 +399,7 @@ This would be rendered using the `link` node, which would render as:
 ### `list`
 
 <details>
+
 Represents the [datocms `list`](https://www.datocms.com/docs/structured-text/dast#list) node.
 
 The `list` node is special in that it has two subkeys of `bulleted` or `ordered` and each of those has its own node configuration.
@@ -431,6 +446,7 @@ This would be rendered using the `List` node, which would render as:
 ### `listItem`
 
 <details>
+
 Represents the [datocms `listItem`](https://www.datocms.com/docs/structured-text/dast#listItem) node.
 
 With the following dast node:
@@ -467,6 +483,7 @@ This would be rendered using the `ListItem` node, which would render as:
 ### `paragraph`
 
 <details>
+
 Represents the [datocms `paragraph`](https://www.datocms.com/docs/structured-text/dast#paragraph) node.
 
 With the following dast node:
@@ -496,6 +513,7 @@ This would be rendered using the `Paragraph` node, which would render as:
 ### `root`
 
 <details>
+
 Represents the [datocms `root`](https://www.datocms.com/docs/structured-text/dast#root) node.
 
 With the following dast node:
@@ -545,6 +563,7 @@ This would be rendered using the `Root` node, which would render as:
 ### `span`
 
 <details>
+
 Represents the [datocms `span`](https://www.datocms.com/docs/structured-text/dast#span) node.
 
 With the following dast node:
@@ -572,6 +591,7 @@ This would be rendered using the `attributedquote` node, which would render as:
 ### `thematicBreak`
 
 <details>
+
 Represents the [datocms `blockquote`](https://www.datocms.com/docs/structured-text/dast#block) node.
 
 With the following dast node:
@@ -615,6 +635,7 @@ A node must implement one of two methods:
 ### `render_value`
 
 <details>
+
 The render value method is used most commonly for the `Span` and `Code` nodes. It will still use the tags and wrappers defined in the configuration.
 
 For example, the `Code` node, defines this as:
@@ -628,11 +649,13 @@ end
 So the rendered code replaces newlines with html line breaks, but it is still wrapped with a `<pre>` and `<code>` tag.
 
 Additionally, for objects that have `children` according to the Dast specification, the `render_value` method just iterates over the children rendering each one.
+
 </details>
 
 ### `render`
 
 <details>
+
 The default render method will render wrappers, the configured tag, and the `render_value` method. If you override the render method, you are taking responsibility for the complete rendering of a dast node and any of its children.
 
 For example, the `ThematicBreak` node's render function is defined as:
@@ -646,6 +669,7 @@ end
 As a result, the thematic break node can't be wrapped nor does it apply a specific tag.
 
 Additionally, the `block` type has a specific render method for the complex rendering that blocks entail.
+
 </details>
 
 ## Blocks
@@ -663,6 +687,7 @@ The block configuration takes `item_type` value and you must provide one of thre
 If you supply the `node` key, you must provide a class that takes the block hash as the only argument for `initialize` and has a `render` function.
 
 <details>
+
 For example:
 
 ```ruby
@@ -770,6 +795,7 @@ The `structure` format is an array of hashes each with a "type" field. The "type
 ### `field`
 
 <details>
+
 When the type is `"field"`, then you also must provide a `"field"` value representing the field that you want to render. This would be used for fields that clearly implement the `to_s` method (strings, symbols, etc.).
 
 ```ruby
@@ -808,11 +834,13 @@ Would render the following html:
   <h1>My Logo</h1>
 </div>
 ```
+
 </details>
 
 ### `value`
 
 <details>
+
 When the type is `"value"`, then you also must provide a `"render_value"` function that takes the block hash as an argument and returns a string.
 
 ```ruby
@@ -857,6 +885,7 @@ Would render the following html:
 ### `block`
 
 <details>
+
 When the type is `"block"`, then you also must provide a `"field"` value that specifies the field which contains another block. That block will the be rendered using the some block configuration.
 
 ```ruby
@@ -918,11 +947,13 @@ Would render the following html:
   <h2>My Logo</h2>
 </div>
 ```
+
 </details>
 
 ### `blocks`
 
 <details>
+
 When the type is `"blocks"`, then you also must provide a `"field"` value that specifies the field which contains an array of blocks. That block will the be rendered using the some block configuration.
 
 ```ruby
@@ -1003,6 +1034,7 @@ Would render the following html:
   <h2>My Logo</h2>
 </div>
 ```
+
 </details>
 
 ## Contributing
