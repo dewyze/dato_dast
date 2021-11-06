@@ -20,6 +20,8 @@ module MiddlemanDatoDast
       private
 
       def url_key
+        # TODO if the url key does not exist
+
         config.item_links[item_type]
       end
     end

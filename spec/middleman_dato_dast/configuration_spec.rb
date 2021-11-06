@@ -125,6 +125,19 @@ RSpec.describe MiddlemanDatoDast::Configuration do
     end
   end
 
+  describe "#item_links" do
+    it "defaults to empty hash" do
+      expect(config.item_links).to eq({})
+    end
+
+    it "can be configurable" do
+      item_links = { "page" => "slug" }
+      config.item_links = item_links
+
+      expect(config.item_links).to eq(item_links)
+    end
+  end
+
   describe "#highlight" do
     it "defaults to true" do
       expect(config.highlight).to be true
