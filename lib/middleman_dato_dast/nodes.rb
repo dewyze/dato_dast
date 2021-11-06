@@ -21,7 +21,7 @@ module MiddlemanDatoDast
   module Nodes
     def self.wrap(value, links = [], blocks = [], config = nil)
       type = value["type"]
-      configuration = config
+      configuration = config || MiddlemanDatoDast.configuration
       node_class = value["node"] || configuration.types[type]["node"]
       node_class.new(value, links, blocks, config)
     end

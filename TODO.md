@@ -2,5 +2,3 @@
 - With indifference access
 - Use middleman syntax for code
   - Use language in code
-- Better API for helper
-  - Take an optional config for that instance only?

@@ -58,6 +58,26 @@ RSpec.describe MiddlemanDatoDast::Configuration do
     end
   end
 
+  describe "#add_wrapper" do
+    it "adds a wrapper for a given type" do
+      config.add_wrapper("heading", {
+        "tag" => "div",
+        "css_class" => "heading",
+        "meta" => { "id" => "data-value", "value" => "1" },
+      })
+
+      expect(config.types["heading"]).to eq(
+        "tag" => "h#",
+        "node" => MiddlemanDatoDast::Nodes::Heading,
+        "wrappers" => [{
+          "tag" => "div",
+          "css_class" => "heading",
+          "meta" => { "id" => "data-value", "value" => "1" },
+        }],
+      )
+    end
+  end
+
   describe "#marks" do
     it "returns the defaults" do
       defaults = {

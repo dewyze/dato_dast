@@ -1,8 +1,6 @@
 RSpec.describe MiddlemanDatoDast::Nodes::Link do
   subject(:link) { described_class.new(raw) }
 
-  after { MiddlemanDatoDast.reset_configuration }
-
   let(:raw) do
     {
       "type" => "link",

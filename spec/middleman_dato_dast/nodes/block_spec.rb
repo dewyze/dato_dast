@@ -62,8 +62,6 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
     }
   end
 
-  after { MiddlemanDatoDast.reset_configuration }
-
   describe "#type" do
     it "returns 'block'" do
       configure({ "image" => { "structure" => [] } })

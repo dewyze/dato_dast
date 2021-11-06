@@ -13,8 +13,6 @@ RSpec.describe MiddlemanDatoDast::Nodes::Paragraph do
     }
   end
 
-  after(:each) { MiddlemanDatoDast.reset_configuration }
-
   describe "#type" do
     it "returns 'paragraph'" do
       expect(node.type).to eq("paragraph")

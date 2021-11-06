@@ -2,6 +2,7 @@
 
 require "active_support/core_ext/array"
 require "active_support/core_ext/string"
+require "active_support/core_ext/object"
 require "active_support/concern"
 require_relative "middleman_dato_dast/version"
 require_relative "middleman_dato_dast/html_tag"

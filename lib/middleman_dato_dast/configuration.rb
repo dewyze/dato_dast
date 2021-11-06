@@ -36,8 +36,8 @@ module MiddlemanDatoDast
     attr_accessor :item_links, :smart_links
 
     def initialize
-      @marks = MARK_CONFIG.dup
-      @types = TYPE_CONFIG.dup
+      @marks = MARK_CONFIG.transform_values { |value| value.dup }
+      @types = TYPE_CONFIG.transform_values { |value| value.dup }
       @item_links = {}
       @blocks = {}
       @smart_links = true
@@ -70,6 +70,12 @@ module MiddlemanDatoDast
       validate_types(new_types)
 
       @types.merge!(new_types)
+    end
+
+    def add_wrapper(type, wrapper)
+      wrappers = Array.wrap(@types[type]["wrappers"])
+      wrappers << wrapper
+      @types[type]["wrappers"] = wrappers
     end
 
     private
