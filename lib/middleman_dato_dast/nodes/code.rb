@@ -6,11 +6,27 @@ module MiddlemanDatoDast
       end
 
       def code
-        @node["code"].gsub(/\n/, "<br/>")
+        @node["code"]
+      end
+
+      def render
+        if highlighter?
+          highlight
+        else
+          super
+        end
       end
 
       def render_value
-        code
+        code.gsub(/\n/, "<br/>")
+      end
+
+      def highlighter?
+        defined?(::Middleman::Syntax::SyntaxExtension)
+      end
+
+      def highlight
+        Middleman::Syntax::Highlighter.highlight(code, language, {}).html_safe
       end
     end
   end

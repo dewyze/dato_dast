@@ -40,7 +40,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
 
   describe "#code" do
     it "returns the code" do
-      expect(code.code).to eq("function greetings() {<br/>  console.log('Hi!');<br/>}")
+      expect(code.code).to eq("function greetings() {\n  console.log('Hi!');\n}")
     end
   end
 
@@ -51,14 +51,41 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
   end
 
   describe "#render" do
-    it "returns the html string" do
-      expect(code.render).to eq(<<~HTML.strip)
+    context "with no highlighter defined" do
+      it "returns the html string" do
+        expect(code.render).to eq(<<~HTML.strip)
         <pre>
         <code>
         function greetings() {<br/>  console.log('Hi!');<br/>}
         </code>
         </pre>
-      HTML
+        HTML
+      end
+    end
+
+    context "with middleman-syntax defined" do
+      class Highlighter
+        def self.highlight(code, lang, _options)
+          <<~HTML.strip
+          <div class="highlight #{lang}">
+          #{code}
+          </div>
+          HTML
+        end
+      end
+
+      it "calls the highlighter method" do
+        stub_const("::Middleman::Syntax::SyntaxExtension", Object)
+        stub_const("::Middleman::Syntax::Highlighter", Highlighter)
+
+        expect(code.render).to eq(<<~HTML.strip)
+          <div class="highlight javascript">
+          function greetings() {
+            console.log('Hi!');
+          }
+          </div>
+        HTML
+      end
     end
   end
 end
