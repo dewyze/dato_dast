@@ -6,7 +6,9 @@ module MiddlemanDatoDast
       end
 
       def block
-        @blocks.find { |block| block[:id] == block_id }
+        return @block if @block
+
+        @block ||= @blocks.find { |block| block[:id] == block_id }
       end
 
       def item_type
@@ -33,7 +35,7 @@ module MiddlemanDatoDast
           when "blocks"
             build_blocks(child)
           else
-            raise "BOOM" # TODO invalid structure
+            raise Errors::InvalidBlockStructureType
           end.merge(extract_tags(child)).compact
         end.flatten
       end
@@ -49,7 +51,11 @@ module MiddlemanDatoDast
       def render
         return super unless node
 
-        node.new(block).render
+        begin
+          node.new(block).render
+        rescue NoMethodError => _e
+          raise Errors::BlockNodeMissingRenderFunction.new(["block->#{item_type}"])
+        end
       end
 
       private
@@ -68,6 +74,8 @@ module MiddlemanDatoDast
       end
 
       def build_field(child)
+        raise Errors::BlockFieldMissing.new(item_type) unless child["field"]
+
         field = child["field"].to_sym
         value = block[field]
 
@@ -79,7 +87,8 @@ module MiddlemanDatoDast
       end
 
       def build_value(child)
-        # TODO needs an error if no render value
+        raise Errors::MissingRenderValueFunction.new(item_type) unless child["render_value"]
+
         value = child["render_value"].call(block)
 
         {

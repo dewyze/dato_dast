@@ -66,6 +66,8 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
 
   describe "#type" do
     it "returns 'block'" do
+      configure({ "image" => { "structure" => [] } })
+
       expect(block.type).to eq("block")
     end
   end
@@ -77,6 +79,7 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
           "tag" => "div",
           "meta" => [{ "id" => "data-value", "value" => "1" }],
           "css_class" => "blue",
+          "render_value" => ->(_b) { "" },
         },
       })
 
@@ -115,6 +118,26 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
 
       expect(block.children).to eq(children)
     end
+
+    it "throws an error if the structure is not a valid type" do
+      configure({
+        "gallery" => {
+          "structure" => [
+            {
+              "type" => "foobar",
+              "field" => "images",
+            }
+          ],
+        },
+      })
+
+      raw = { "type" => "block", "item" => "1" }
+      gallery = gallery("1")
+
+      block = described_class.new(raw, [], [gallery])
+
+      expect { block.children }.to raise_error(MiddlemanDatoDast::Errors::InvalidBlockStructureType)
+    end
   end
 
   describe "#render_value" do
@@ -137,12 +160,48 @@ RSpec.describe MiddlemanDatoDast::Nodes::Block do
       end
     end
 
+    class InvalidNode
+      def initialize(block); end
+    end
+
     it "renders using a node's render method" do
       configure({
         "image" => { "node" => TestNode },
       })
 
       expect(block.render).to eq("<div>Hello world!</div>")
+    end
+
+    it "raises an invalid node error if there is no render method" do
+      configure({
+        "image" => { "node" => InvalidNode },
+      })
+
+      expect { block.render }.to raise_error(MiddlemanDatoDast::Errors::BlockNodeMissingRenderFunction)
+    end
+
+    it "raises an block field missing error if the structure type is field" do
+      configure({
+        "image" => {
+          "structure" => {
+            "type" => "field",
+          },
+        },
+      })
+
+      expect { block.render }.to raise_error(MiddlemanDatoDast::Errors::BlockFieldMissing)
+    end
+
+    it "raises an missing render value method error if the structure type is value" do
+      configure({
+        "image" => {
+          "structure" => {
+            "type" => "value",
+          },
+        },
+      })
+
+      expect { block.render }.to raise_error(MiddlemanDatoDast::Errors::MissingRenderValueFunction)
     end
 
     it "renders children" do

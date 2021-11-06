@@ -30,13 +30,14 @@ module MiddlemanDatoDast
       Marks::UNDERLINE => { "tag" => "u" },
     }.freeze
 
-    attr_reader :host
-    attr_writer :marks, :types
-    attr_accessor :blocks, :item_links, :smart_links
+    BLOCK_RENDER_KEYS = ["node", "render_value", "structure"].freeze
+
+    attr_reader :blocks, :host, :marks, :types
+    attr_accessor :item_links, :smart_links
 
     def initialize
-      @marks = {}
-      @types = {}
+      @marks = MARK_CONFIG.dup
+      @types = TYPE_CONFIG.dup
       @item_links = {}
       @blocks = {}
       @smart_links = true
@@ -53,12 +54,62 @@ module MiddlemanDatoDast
       end
     end
 
-    def marks
-      @memoized_marks ||= MARK_CONFIG.dup.merge(@marks)
+    def blocks=(new_blocks)
+      validate_blocks_configuration(new_blocks)
+
+      @blocks = new_blocks
     end
 
-    def types
-      @memoized_typed ||= TYPE_CONFIG.dup.merge(@types)
+    def marks=(new_marks)
+      validate_marks_configuration(new_marks)
+
+      @marks.merge!(new_marks)
+    end
+
+    def types=(new_types)
+      validate_types(new_types)
+
+      @types.merge!(new_types)
+    end
+
+    private
+
+    def validate_blocks_configuration(blocks_config)
+      invalid_blocks = []
+
+      blocks_config.each do |block, block_config|
+        intersection = block_config.keys & BLOCK_RENDER_KEYS
+        invalid_blocks << block unless intersection.length == 1
+      end
+
+      raise Errors::InvalidBlocksConfiguration.new(invalid_blocks) if invalid_blocks.present?
+    end
+
+    def validate_types(types_config)
+      invalid_configs = []
+      invalid_nodes = []
+
+      types_config.each do |type, type_config|
+        node = type_config["node"]
+        if node
+          invalid_nodes << type unless node.instance_methods.include?(:render)
+        else
+          invalid_configs << type
+        end
+      end
+
+      raise Errors::InvalidTypesConfiguration.new(invalid_configs) if invalid_configs.present?
+      raise Errors::InvalidNodes.new(invalid_nodes) if invalid_nodes.present?
+    end
+
+    def validate_marks_configuration(marks_config)
+      invalid_marks = []
+
+      marks_config.each do |mark, mark_config|
+        invalid_marks << mark unless mark_config.keys.include?("tag")
+      end
+
+      raise Errors::InvalidMarksConfiguration.new(invalid_marks) if invalid_marks.present?
     end
   end
 end

@@ -29,8 +29,6 @@ module MiddlemanDatoDast
 
         Nodes.wrap(document, links, blocks).render
       end
-
-      # TODO: process links/blocks and ensure there are node definitions
     end
   end
 end

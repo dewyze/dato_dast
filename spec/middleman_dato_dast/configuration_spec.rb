@@ -26,11 +26,11 @@ RSpec.describe MiddlemanDatoDast::Configuration do
     end
 
     it "merges in new values" do
-      klass = Class.new
+      klass = Class.new { def render; end }
 
       new_types = {
         "link" => { "tag" => "button", "node" => klass },
-        "newType" => { "tag" => "div" },
+        "newType" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Generic },
       }
       expected_types = {
         "block" => { "node" => MiddlemanDatoDast::Nodes::Block },
@@ -49,7 +49,7 @@ RSpec.describe MiddlemanDatoDast::Configuration do
         "root" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Root },
         "span" => { "node" => MiddlemanDatoDast::Nodes::Span },
         "thematicBreak" => { "tag" => "hr", "node" => MiddlemanDatoDast::Nodes::ThematicBreak },
-        "newType" => { "tag" => "div" },
+        "newType" => { "tag" => "div", "node" => MiddlemanDatoDast::Nodes::Generic },
       }
 
       config.types = new_types
@@ -120,6 +120,48 @@ RSpec.describe MiddlemanDatoDast::Configuration do
       config.host = "https://google.com"
 
       expect(config.host).to eq("google.com")
+    end
+  end
+
+  describe "InvalidBlocksConfiguration" do
+    it "raises the error if no key is present" do
+      expect do
+        config.blocks = { "image" => {} }
+      end.to raise_error(MiddlemanDatoDast::Errors::InvalidBlocksConfiguration)
+    end
+
+    it "raises the error if two or more keys are present" do
+      expect do
+        config.blocks = {
+          "image" => { "render_value" => "", "node" => "" },
+        }
+      end.to raise_error(MiddlemanDatoDast::Errors::InvalidBlocksConfiguration)
+    end
+  end
+
+  describe "InvalidTypesConfiguration" do
+    it "raises the error if no 'node' key is present" do
+      expect do
+        config.types = { "image" => {} }
+      end.to raise_error(MiddlemanDatoDast::Errors::InvalidTypesConfiguration)
+    end
+  end
+
+  describe "InvalidMarksConfiguration" do
+    it "raises the error if no 'tag' key is present" do
+      expect do
+        config.marks = { "image" => {} }
+      end.to raise_error(MiddlemanDatoDast::Errors::InvalidMarksConfiguration)
+    end
+  end
+
+  describe "InvalidNode" do
+    it "raises the error if a type node does not have a render method" do
+      expect do
+        config.types = {
+          "generic" => { "node" => Class.new }
+        }
+      end.to raise_error(MiddlemanDatoDast::Errors::InvalidNodes)
     end
   end
 end
