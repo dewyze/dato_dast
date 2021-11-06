@@ -125,6 +125,18 @@ RSpec.describe MiddlemanDatoDast::Configuration do
     end
   end
 
+  describe "#highlight" do
+    it "defaults to true" do
+      expect(config.highlight).to be true
+    end
+
+    it "can be configured" do
+      config.highlight = false
+
+      expect(config.highlight).to be false
+    end
+  end
+
   describe "#host" do
     it "defaults to nil" do
       expect(config.host).to be_nil

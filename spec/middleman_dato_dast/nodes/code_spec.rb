@@ -86,6 +86,20 @@ RSpec.describe MiddlemanDatoDast::Nodes::Code do
           </div>
         HTML
       end
+
+      it "doesn't call the highlighter if configured off" do
+        MiddlemanDatoDast.configure { |config| config.highlight = false }
+
+        stub_const("::Middleman::Syntax::SyntaxExtension", Object)
+
+        expect(code.render).to eq(<<~HTML.strip)
+          <pre>
+          <code>
+          function greetings() {<br/>  console.log('Hi!');<br/>}
+          </code>
+          </pre>
+        HTML
+      end
     end
   end
 end

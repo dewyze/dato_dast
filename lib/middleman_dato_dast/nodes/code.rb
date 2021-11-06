@@ -21,8 +21,10 @@ module MiddlemanDatoDast
         code.gsub(/\n/, "<br/>")
       end
 
+      private
+
       def highlighter?
-        defined?(::Middleman::Syntax::SyntaxExtension)
+        config.highlight && defined?(::Middleman::Syntax::SyntaxExtension)
       end
 
       def highlight

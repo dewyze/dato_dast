@@ -33,15 +33,16 @@ module MiddlemanDatoDast
     BLOCK_RENDER_KEYS = ["node", "render_value", "structure"].freeze
 
     attr_reader :blocks, :host, :marks, :types
-    attr_accessor :item_links, :smart_links
+    attr_accessor :highlight, :item_links, :smart_links
 
     def initialize
-      @marks = MARK_CONFIG.transform_values { |value| value.dup }
-      @types = TYPE_CONFIG.transform_values { |value| value.dup }
-      @item_links = {}
       @blocks = {}
-      @smart_links = true
+      @highlight = true
       @host = nil
+      @item_links = {}
+      @marks = MARK_CONFIG.transform_values { |value| value.dup }
+      @smart_links = true
+      @types = TYPE_CONFIG.transform_values { |value| value.dup }
     end
 
     def host=(new_host)
