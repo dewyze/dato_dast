@@ -22,12 +22,12 @@ module MiddlemanDatoDast
     end
 
     helpers do
-      def structured_text(object)
+      def structured_text(object, config = nil)
         document = object[:value]["document"]
         links = object[:links]
         blocks = object[:blocks]
 
-        Nodes.wrap(document, links, blocks).render
+        Nodes.wrap(document, links, blocks, config).render
       end
     end
   end

@@ -8,15 +8,15 @@ module MiddlemanDatoDast
         name.demodulize.camelize(:lower)
       end
 
-      def initialize(node, links = [], blocks = [], node_config = nil)
+      def initialize(node, links = [], blocks = [], config = nil)
         @node = node
         @links = links
         @blocks = blocks
-        @node_config = node_config
+        @config = config
       end
 
       def config
-        MiddlemanDatoDast.configuration
+        @config ||= MiddlemanDatoDast.configuration
       end
 
       def type
@@ -71,7 +71,7 @@ module MiddlemanDatoDast
         return EMPTY unless children.present?
 
         children.map do |child|
-          Nodes.wrap(child, @links, @blocks).render
+          Nodes.wrap(child, @links, @blocks, config).render
         end.join("\n").gsub(/\n+/, "\n")
       end
 
