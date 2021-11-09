@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "middleman-dato-dast"
+require "dato_dast"
 require "pry-byebug"
 
 RSpec.configure do |config|
@@ -14,5 +14,5 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.before(:each) { MiddlemanDatoDast.reset_configuration }
+  config.before(:each) { DatoDast.reset_configuration }
 end

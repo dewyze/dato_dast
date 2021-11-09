@@ -1,13 +1,13 @@
-# Middleman::Dato::Dast
+# DatoDast
 
-`MiddlemanDatoDast` is a gem that provides a `structured_text(...)` rendering method and configuration options for rendering a [DatoCMS Dast](https://www.datocms.com/docs/structured-text/dast) document.
+`DatoDast` is a gem that provides a `structured_text(...)` rendering method and configuration options for rendering a [DatoCMS Dast](https://www.datocms.com/docs/structured-text/dast) document.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'middleman-dato-dast'
+gem 'dato_dast'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install middleman-dato-dast
+    $ gem install dato_dast
 
 In your `config.rb` then you can do the following:
 
@@ -65,7 +65,7 @@ Host for your site, used in conjunction with 'smart_links' option.
 If you are using [`itemLinks`](https://www.datocms.com/docs/structured-text/dast#itemLink), you can use this configuration hash to define which field to call on the item to determine the url. For example, if you have a `page` model and a `slug` field that contains the url, you would use:
 
 ```ruby
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.item_links = {
     "page" => "slug",
   }
@@ -118,7 +118,7 @@ It would normally render as:
 If we used the following configuration:
 
 ```ruby
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.marks = {
     "emphasis" => { "tag" => "i", "wrappers" => [{ "tag" => "div", "css_class" => "blue" }],
   }
@@ -635,7 +635,9 @@ structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-te
 
 ## Nodes
 
-All parts of the [DatoCMS Dast](https://www.datocms.com/docs/structured-text/dast) spec are rendered using a `Node` object. The default nodes are of the namespace `MiddlemanDatoDast::Nodes`.
+All parts of the [DatoCMS
+Dast](https://www.datocms.com/docs/structured-text/dast) spec are rendered using
+a `Node` object. The default nodes are of the namespace `DatoDast::Nodes`.
 
 A node must implement one of two methods:
 
@@ -745,7 +747,7 @@ class Photo
   end
 end
 
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "photo" => { "node" => Photo },
   }
@@ -778,7 +780,7 @@ This node would render the following html:
 #   }
 # }
 
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "photo" => {
       "render_value" => ->(block) { "<img src='#{block[:url]}' />" },
@@ -797,7 +799,7 @@ This would render the following html:
 
 ### `structure`
 
-The most powerful part of `MiddlemanDatoDast` is the `structure` tools for rendering blocks.
+The most powerful part of `DatoDast` is the `structure` tools for rendering blocks.
 
 The `structure` configuration can be used on nested blocks or relationships to construct multiple tags.
 
@@ -827,7 +829,7 @@ When the type is `"field"`, then you also must provide a `"field"` value represe
 #   }
 #   :caption=>"My Logo",
 # }
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "photo" => {
       "wrappers" => [{ "tag" => "div", "css_class" => "caption" }],
@@ -872,7 +874,7 @@ When the type is `"value"`, then you also must provide a `"render_value"` functi
 #   }
 #   :caption=>"My Logo",
 # }
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "photo" => {
       "wrappers" => [{ "tag" => "div", "css_class" => "caption" }],
@@ -921,7 +923,7 @@ When the type is `"block"`, then you also must provide a `"field"` value that sp
 #   }
 #   :caption=>"My Logo",
 # }
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "card" => {
       "wrappers" => {
@@ -1001,7 +1003,7 @@ When the type is `"blocks"`, then you also must provide a `"field"` value that s
 #   ],
 #   :caption=>"My Logo",
 # }
-MiddlemanDatoDast.configure do |config|
+DatoDast.configure do |config|
   config.blocks = {
     "card" => {
       "wrappers" => {
@@ -1055,4 +1057,4 @@ Would render the following html:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[dewyze]/middleman-dato-dast.
+Bug reports and pull requests are welcome on GitHub at https://github.com/[dewyze]/dato_dast.
