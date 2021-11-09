@@ -83,6 +83,20 @@ RSpec.describe MiddlemanDatoDast::Nodes::Link do
 
         expect(link.path).to eq("/link")
       end
+
+      it "returns an email link for an email address with 'mailto'" do
+        raw["url"] = "mailto:user@example.com"
+        link = described_class.new(raw)
+
+        expect(link.path).to eq("mailto:user@example.com")
+      end
+
+      it "returns an email link for an email address without 'mailto'" do
+        raw["url"] = "user@example.com"
+        link = described_class.new(raw)
+
+        expect(link.path).to eq("mailto:user@example.com")
+      end
     end
 
     context "with smart links without a host value" do

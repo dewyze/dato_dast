@@ -7,7 +7,13 @@ module MiddlemanDatoDast
       ].freeze
 
       def url
-        @node["url"]
+        node_url = @node["url"]
+
+        if node_url =~ URI::MailTo::EMAIL_REGEXP
+          "mailto:#{node_url}"
+        else
+          node_url
+        end
       end
 
       def meta
@@ -38,7 +44,7 @@ module MiddlemanDatoDast
       def local_url
         return @local_url if defined?(@local_url)
 
-        @local_url = if uri.host.nil?
+        @local_url = if uri.host.nil? && !uri.is_a?(URI::MailTo)
           "/#{uri.to_s}"
         elsif smart_links? && uri.host == config.host
           uri.path

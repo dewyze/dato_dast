@@ -170,7 +170,7 @@ Each type configuration takes the following keys:
 - `tag`: The default html tag to use. `nil` can be used to not use a key. Additionally you can provide a lambda that takes the Node object.
 - `node`: This represents the Node object used for rendering. See [Nodes](#nodes) for more details.
 - `css_class`: This is a string that is used in the `class=""` attribute of the tag. Additionally you can provide a lambda that takes the Node object.
-- `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
+- [ ] `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
   - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
 - `wrappers`: This represents additional wrappers use to surrounded the given node type. See [Wrappers](#wrappers) for more details.
 
@@ -397,6 +397,13 @@ This would be rendered using the `link` node, which would render as:
 ```
 
 </details>
+
+#### Emails
+
+Given the DatoCMS Structured text link does not have an option to input an email
+address, this library will also compare the path against the
+URI::MailTo::EMAIL_REGEXP and if it is a match, will prepend the `mailto:`
+prefix.
 
 ### `list`
 
