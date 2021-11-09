@@ -747,7 +747,7 @@ end
 
 MiddlemanDatoDast.configure do |config|
   config.blocks = {
-    "photo" => { "node" => photo },
+    "photo" => { "node" => Photo },
   }
 end
 ```
