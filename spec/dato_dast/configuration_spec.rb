@@ -8,6 +8,7 @@ RSpec.describe DatoDast::Configuration do
         "blockquote" => { "tag" => "blockquote", "node" => DatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => DatoDast::Nodes::Code, "wrappers" => ["pre"] },
         "generic" => { "node" => DatoDast::Nodes::Generic },
+        "inlineItem" => { "node" => DatoDast::Nodes::InlineItem },
         "itemLink" => { "tag" => "a", "node" => DatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "a", "node" => DatoDast::Nodes::Link },
         "listItem" => { "tag" => "li", "node" => DatoDast::Nodes::ListItem },
@@ -46,6 +47,7 @@ RSpec.describe DatoDast::Configuration do
         "blockquote" => { "tag" => "blockquote", "node" => DatoDast::Nodes::AttributedQuote },
         "code" => { "tag" => "code", "node" => DatoDast::Nodes::Code, "wrappers" => ["pre"] },
         "generic" => { "node" => DatoDast::Nodes::Generic },
+        "inlineItem" => { "node" => DatoDast::Nodes::InlineItem },
         "itemLink" => { "tag" => "a", "node" => DatoDast::Nodes::ItemLink, "url_key" => :slug },
         "link" => { "tag" => "button", "node" => klass },
         "listItem" => { "tag" => "li", "node" => DatoDast::Nodes::ListItem },
@@ -171,7 +173,7 @@ RSpec.describe DatoDast::Configuration do
     end
   end
 
-  describe "InvalidBlocksConfiguration" do
+  describe "blocks InvalidItemsConfiguration" do
     it "raises the error if no key is present" do
       expect do
         config.blocks = { "image" => {} }
@@ -184,6 +186,22 @@ RSpec.describe DatoDast::Configuration do
           "image" => { "render_value" => "", "node" => "" },
         }
       end.to raise_error(DatoDast::Errors::InvalidItemsConfiguration, /blocks->image/)
+    end
+  end
+
+  describe "inline_items InvalidItemsConfiguration" do
+    it "raises the error if no key is present" do
+      expect do
+        config.inline_items = { "image" => {} }
+      end.to raise_error(DatoDast::Errors::InvalidItemsConfiguration, /inline_items->image/)
+    end
+
+    it "raises the error if two or more keys are present" do
+      expect do
+        config.inline_items = {
+          "image" => { "render_value" => "", "node" => "" },
+        }
+      end.to raise_error(DatoDast::Errors::InvalidItemsConfiguration, /inline_items->image/)
     end
   end
 

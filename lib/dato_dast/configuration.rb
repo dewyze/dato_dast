@@ -8,6 +8,7 @@ module DatoDast
       Nodes::Code.type => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
       Nodes::Generic.type => { "node" => Nodes::Generic },
       Nodes::Heading.type => { "tag" => ->(node) { "h#{node.level}" }, "node" => Nodes::Heading },
+      Nodes::InlineItem.type => { "node" => Nodes::InlineItem },
       Nodes::ItemLink.type => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
       Nodes::Link.type => { "tag" => "a", "node" => Nodes::Link },
       Nodes::List.type => { "tag" => ->(node) { node.style == "bulleted" ? "ul" : "ol" }, "node" => Nodes::List },
@@ -29,11 +30,12 @@ module DatoDast
 
     ITEM_RENDER_KEYS = ["node", "render_value", "structure"].freeze
 
-    attr_reader :blocks, :host, :marks, :types
+    attr_reader :blocks, :host, :inline_items, :marks, :types
     attr_accessor :highlight, :item_links, :smart_links
 
     def initialize
       @blocks = {}
+      @inline_items = {}
       @highlight = true
       @host = nil
       @item_links = {}
@@ -56,6 +58,12 @@ module DatoDast
       validate_items_configuration(new_blocks, "blocks")
 
       @blocks = new_blocks
+    end
+
+    def inline_items=(new_inline_items)
+      validate_items_configuration(new_inline_items, "inline_items")
+
+      @inline_items = new_inline_items
     end
 
     def marks=(new_marks)

@@ -16,6 +16,8 @@ module DatoDast
       end
 
       def node
+        raise DatoDast::Errors::MissingItemConfiguration.new(error_label) unless node_config
+
         node_config["node"]
       end
 
@@ -26,9 +28,9 @@ module DatoDast
             build_field(child)
           when "value"
             build_value(child)
-          when label
+          when "item"
             build_item(item[child["field"].to_sym])
-          when label.pluralize
+          when "items"
             build_items(child)
           else
             raise DatoDast::Errors::InvalidStructureType.new(error_label)

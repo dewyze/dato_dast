@@ -161,7 +161,11 @@ This would use the `<i>` tag instead of `<emphasis>` and wrap that `<i>` tag wit
 
 ### `config.blocks`
 
-The blocks configuraiton is a hash with a block `item_type` key and the block configuration. See the [Blocks](#blocks) section for details on configuration blocks.
+The blocks configuration is a hash with a block `item_type` key and the block configuration. See the [Blocks And Inline Items](#blocks_and_inline_items) section for specific details on block configuration.
+
+### `config.inline_items`
+
+The inline items configuration is a hash with an inline_item `item_type` key and the inline_item configuration. See the [Blocks And Inline Items](#blocks_and_inline_items) section for specific details on block configuration.
 
 ### `config.types`
 
@@ -178,6 +182,7 @@ TYPE_CONFIG = {
   "code" => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
   "generic" => { "node" => Nodes::Generic },
   "heading" => { "tag" => ->(node) { "h#{node.level}" }, "node" => Nodes::Heading },
+  "inlineItem" => { "node" => Nodes::InlineItem },
   "itemLink" => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
   "link" => { "tag" => "a", "node" => Nodes::Link },
   "list" => { "tag" => ->(node) { node.style == "bulleted" ? "ul" : "ol" }, "node" => Nodes::List },
@@ -340,6 +345,16 @@ This would be rendered using the `Heading` node, which would render as:
 ```
 
 One note about the `Heading` node, is that it accepts a tag with a `#` symbol which it will use `gsub` on to replace with the `"level"` value.
+
+</details>
+
+### `inlineItem`
+
+<details>
+
+Represents the [DatoCMS `inlineItem`](https://www.datocms.com/docs/structured-text/dast#inlineItem) node.
+
+Inline items should be configured on a per-item basis. See the [Block and Inline Items](#blocks_and_inline_items) section on how to configure specific inline items.
 
 </details>
 
@@ -644,7 +659,7 @@ This would be rendered using the `ThematicBreak` node, which would render as:
 
 ## Wrappers
 
-Marks, Types, and Blocks all supports configuring a `wrappers` field.
+Marks, Types, Inline Items, and Blocks all supports configuring a `wrappers` field.
 
 The wrappers are rendered from the outside in, so the first wrapper will wrap the following wrappers.
 
@@ -703,36 +718,54 @@ end
 
 As a result, the thematic break node can't be wrapped nor does it apply a specific tag.
 
-Additionally, the `block` type has a specific render method for the complex rendering that blocks entail.
+Additionally, the `block` and `inlineItem` types have a specific render method for the complex rendering that items entail.
 
 </details>
 
-## Blocks
+## Blocks and Inline Items
 
-Blocks are the most powerful parts of structured text. We can take objects and render them in a specific way.
+Blocks and Inline Items are the most powerful parts of structured text. We can take DatoCMS objects and render them in a specific way.
 
-Blocks can take the same values as nodes. One difference with blocks is that the block object is provided to the proc instead of the node when a Proc is provided.
+We refer to both blocks and inline items as "items". In the DatoCMS api, objects have an `item_type` and they are referred to instructured texts as `items` so the name seems a good fit.
 
-- `tag`
-- `css_class`
-- `meta`
+**Configuration**
 
-The block configuration takes `item_type` value and you must provide one of three methods for rendering:
+Blocks and Inline Items take the exact type of configuration, just under a different key:
 
-- `node`
-- `render_value`
-- `structure`
+```ruby
+config = {...}
+DatoDast.configure do |config|
+  config.block = config
+  config.inline_items = config
+end
+```
+
+This is a valid configuration setup. However, blocks are typically a DatoCMS block, while Inline Items are typically a model. Additionally, inline items are rendered...well...inline, so you may want to render something different when it's in block form vs inline.
+
+Items can take the same values as nodes. (One difference with items is that the item object is provided to the proc instead of the node when a Proc is provided.)
+
+- `tag`: The default html tag to use. `nil` can be used to not use a key. Additionally you can provide a lambda that takes the Node object.
+- `css_class`: This is a string that is used in the `class=""` attribute of the tag. Additionally you can provide a lambda that takes the Node object.
+- `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
+  - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
+- `wrappers`: This represents additional wrappers use to surrounded the given node type. See [Wrappers](#wrappers) for more details.
+
+The item configuration takes `item_type` value and you must provide one of three methods for rendering:
+
+- `node`: This represents the Node object used for rendering. See [Nodes](#nodes) for more details.
+- `render_value` : This represents a lambda that takes the item as an argument and returns the result of the lambda.
+- `structure`: This is a hash structure for rendering complex setups without needing to use nodes.
 
 ### `node`
 
-If you supply the `node` key, you must provide a class that takes the block hash as the only argument for `initialize` and has a `render` function.
+If you supply the `node` key, you must provide a class that takes the item hash as the only argument for `initialize` and has a `render` function.
 
 <details>
 
 For example:
 
 ```ruby
-# Let's say we have an (abbreviated) Photo block that has a dato cms image under ":image" and a ":caption" string
+# Let's say we have an (abbreviated) Photo item that has a dato cms image under ":image" and a ":caption" string
 # {
 #   :id=>"1",
 #   :item_type=>"photo",
@@ -787,12 +820,12 @@ This node would render the following html:
 
 ### `render_value`
 
-`render_value` is a simpler form where you can supply a lamba that takes the hash object and it will render the lambda by calling it with the block hash.
+`render_value` is a simpler form where you can supply a lamba that takes the hash object and it will render the lambda by calling it with the item hash.
 
 <details>
 
 ```ruby
-# Using the following block hash
+# Using the following item hash
 # {
 #   :id=>"1",
 #   :item_type=>"photo",
@@ -804,9 +837,9 @@ This node would render the following html:
 # }
 
 DatoDast.configure do |config|
-  config.blocks = {
+  config.inline_items = {
     "photo" => {
-      "render_value" => ->(block) { "<img src='#{block[:url]}' />" },
+      "render_value" => ->(item) { "<img src='#{item[:url]}' />" },
     }
   }
 end
@@ -822,16 +855,16 @@ This would render the following html:
 
 ### `structure`
 
-The most powerful part of `DatoDast` is the `structure` tools for rendering blocks.
+The most powerful part of `DatoDast` is the `structure` tools for rendering items.
 
-The `structure` configuration can be used on nested blocks or relationships to construct multiple tags.
+The `structure` configuration can be used on nested items or relationships to construct multiple tags.
 
 The `structure` format is an array of hashes each with a "type" field. The "type" can be one of four values:
 
 - `"field"`
 - `"value"`
-- `"block"`
-- `"blocks"`
+- `"item"`
+- `"items"`
 
 ### `field`
 
@@ -882,7 +915,7 @@ Would render the following html:
 
 <details>
 
-When the type is `"value"`, then you also must provide a `"render_value"` function that takes the block hash as an argument and returns a string.
+When the type is `"value"`, then you also must provide a `"render_value"` function that takes the item hash as an argument and returns a string.
 
 ```ruby
 # With the object
@@ -906,7 +939,7 @@ DatoDast.configure do |config|
           "type" => "value",
           "tag" => "span",
           "css_class" => "blue",
-          "render_value" => ->(block) { block[:caption] },
+          "render_value" => ->(item) { item[:caption] },
         },
       ],
     },
@@ -923,14 +956,14 @@ Would render the following html:
 ```
 </details>
 
-### `block`
+### `item`
 
 <details>
 
-When the type is `"block"`, then you also must provide a `"field"` value that specifies the field which contains another block. That block will the be rendered using the some block configuration.
+When the type is `"item"`, then you also must provide a `"field"` value that specifies the field which contains another item. That item will the be rendered using the same item configuration.
 
 ```ruby
-# Let's imagine a card object with photo block relationship and caption
+# Let's imagine a card object with photo item relationship and caption
 # {
 #   :id=>"2",
 #   :item_type => "card",
@@ -947,7 +980,7 @@ When the type is `"block"`, then you also must provide a `"field"` value that sp
 #   :caption=>"My Logo",
 # }
 DatoDast.configure do |config|
-  config.blocks = {
+  config.inline_items = {
     "card" => {
       "wrappers" => {
         "tag" => "div",
@@ -959,7 +992,7 @@ DatoDast.configure do |config|
       },
       "structure" => [
         {
-          "type" => "block",
+          "type" => "item",
           "field" => "photo",
         },
         {
@@ -972,7 +1005,7 @@ DatoDast.configure do |config|
     "photo" => {
       "tag" => "div",
       "css_class" => "img",
-      "render_value" => ->(block) { "<img src='#{block[:url]}' />" }
+      "render_value" => ->(item) { "<img src='#{item[:url]}' />" }
     }
   }
 end
@@ -991,14 +1024,14 @@ Would render the following html:
 
 </details>
 
-### `blocks`
+### `items`
 
 <details>
 
-When the type is `"blocks"`, then you also must provide a `"field"` value that specifies the field which contains an array of blocks. That block will the be rendered using the some block configuration.
+When the type is `"items"`, then you also must provide a `"field"` value that specifies the field which contains an array of items. That item will the be rendered using the some item configuration.
 
 ```ruby
-# Let's imagine a card object with photo block relationship and caption
+# Let's imagine a card object with photo item relationship and caption
 # {
 #   :id=>"2",
 #   :item_type => "card",
@@ -1039,7 +1072,7 @@ DatoDast.configure do |config|
       },
       "structure" => []
         {
-          "type" => "blocks",
+          "type" => "items",
           "field" => "gallery",
           "tag" => "div",
           "css_class" => "gallery",
@@ -1054,7 +1087,7 @@ DatoDast.configure do |config|
     "photo" => {
       "tag" => "div",
       "css_class" => "img",
-      "render_value" => ->(block) { "<img src='#{block[:url]}' />" }
+      "render_value" => ->(item) { "<img src='#{item[:url]}' />" }
     }
   }
 end

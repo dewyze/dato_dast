@@ -1,5 +1,5 @@
-RSpec.describe DatoDast::Nodes::Block do
-  subject(:block) { described_class.new(raw, links, blocks) }
+RSpec.describe DatoDast::Nodes::Item do
+  subject(:item) { DatoDast::Nodes::Block.new(raw, links, items) }
 
   let(:raw) do
     {
@@ -8,7 +8,7 @@ RSpec.describe DatoDast::Nodes::Block do
     }
   end
   let(:links) { [] }
-  let(:blocks) do
+  let(:items) do
     [image("1")]
   end
 
@@ -62,17 +62,9 @@ RSpec.describe DatoDast::Nodes::Block do
     }
   end
 
-  describe "#type" do
-    it "returns 'block'" do
-      configure({ "image" => { "structure" => [] } })
-
-      expect(block.type).to eq("block")
-    end
-  end
-
   describe "#tag_info" do
     it "returns the tag info" do
-      configure({
+      configure_blocks({
         "image" => {
           "tag" => "div",
           "meta" => [{ "id" => "data-value", "value" => "1" }],
@@ -81,7 +73,7 @@ RSpec.describe DatoDast::Nodes::Block do
         },
       })
 
-      expect(block.tag_info).to eq({
+      expect(item.tag_info).to eq({
         "tag" => "div",
         "meta" => [{ "id" => "data-value", "value" => "1" }],
         "css_class" => "blue",
@@ -89,15 +81,15 @@ RSpec.describe DatoDast::Nodes::Block do
     end
 
     it "returns the tag info when procs are provided" do
-      configure({
+      configure_blocks({
         "image" => {
-          "tag" => ->(block) { "h1" },
-          "css_class" => ->(block) { block[:item_type] },
+          "tag" => ->(item) { "h1" },
+          "css_class" => ->(item) { item[:item_type] },
           "render_value" => ->(_b) { "" },
         },
       })
 
-      expect(block.tag_info).to eq({
+      expect(item.tag_info).to eq({
         "tag" => "h1",
         "css_class" => "image",
         "meta" => nil,
@@ -107,11 +99,11 @@ RSpec.describe DatoDast::Nodes::Block do
 
   describe "#children" do
     it "returns the children wrapped in a generic type" do
-      configure({
+      configure_blocks({
         "gallery" => {
           "structure" => [
             {
-              "type" => "blocks",
+              "type" => "items",
               "field" => "images",
             }
           ],
@@ -120,21 +112,22 @@ RSpec.describe DatoDast::Nodes::Block do
 
       raw = { "type" => "block", "item" => "1" }
       gallery = gallery("1")
-      blocks = gallery[:images].map do |child|
+      item = DatoDast::Nodes::Block.new(raw, [], [gallery])
+
+      items = gallery[:images].map do |child|
         { "type" => "block", "item" => child[:id] }
       end
       children = [{
         "type" => "generic",
-        "children" => blocks,
+        "children" => items,
       }]
 
-      block = described_class.new(raw, [], [gallery])
 
-      expect(block.children).to eq(children)
+      expect(item.children).to eq(children)
     end
 
     it "throws an error if the structure is not a valid type" do
-      configure({
+      configure_blocks({
         "gallery" => {
           "structure" => [
             {
@@ -148,54 +141,54 @@ RSpec.describe DatoDast::Nodes::Block do
       raw = { "type" => "block", "item" => "1" }
       gallery = gallery("1")
 
-      block = described_class.new(raw, [], [gallery])
+      item = DatoDast::Nodes::Block.new(raw, [], [gallery])
 
-      expect { block.children }.to raise_error(DatoDast::Errors::InvalidStructureType, /block->gallery/)
+      expect { item.children }.to raise_error(DatoDast::Errors::InvalidStructureType, /block->gallery/)
     end
   end
 
   describe "#render_value" do
     it "calls a block if provided" do
-      configure({
+      configure_blocks({
         "image" => {
-          "render_value" => ->(block) { block[:caption] },
+          "render_value" => ->(item) { item[:caption] },
         },
       })
 
-      expect(block.render_value).to eq("This is not a pipe.")
+      expect(item.render_value).to eq("This is not a pipe.")
     end
   end
 
   describe "#render" do
     class TestNode
-      def initialize(block); end
+      def initialize(item); end
       def render
         "<div>Hello world!</div>"
       end
     end
 
     class InvalidNode
-      def initialize(block); end
+      def initialize(item); end
     end
 
     it "renders using a node's render method" do
-      configure({
+      configure_blocks({
         "image" => { "node" => TestNode },
       })
 
-      expect(block.render).to eq("<div>Hello world!</div>")
+      expect(item.render).to eq("<div>Hello world!</div>")
     end
 
     it "raises an invalid node error if there is no render method" do
-      configure({
+      configure_blocks({
         "image" => { "node" => InvalidNode },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::MissingRenderFunction, /block->image/)
+      expect { item.render }.to raise_error(DatoDast::Errors::MissingRenderFunction, /block->image/)
     end
 
-    it "raises an block field missing error if the structure type is field" do
-      configure({
+    it "raises an field missing error if the structure type is field" do
+      configure_blocks({
         "image" => {
           "structure" => {
             "type" => "field",
@@ -203,11 +196,11 @@ RSpec.describe DatoDast::Nodes::Block do
         },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::FieldMissing, /block->image/)
+      expect { item.render }.to raise_error(DatoDast::Errors::FieldMissing, /block->image/)
     end
 
     it "raises an missing render value method error if the structure type is value" do
-      configure({
+      configure_blocks({
         "image" => {
           "structure" => {
             "type" => "value",
@@ -215,31 +208,65 @@ RSpec.describe DatoDast::Nodes::Block do
         },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::MissingRenderValueFunction, /block->image/)
+      expect { item.render }.to raise_error(DatoDast::Errors::MissingRenderValueFunction, /block->image/)
+    end
+
+    it "raises an missing item configuration error if the configuration is missing" do
+      expect { item.render }.to raise_error(DatoDast::Errors::MissingItemConfiguration, /block->image/)
     end
 
     it "renders children" do
-      configure({
+      configure_blocks({
         "gallery" => {
           "wrappers" => [{"tag" => "div", "css_class" => "blue"}],
           "structure" => [
             {
-              "type" => "blocks",
+              "type" => "items",
               "field" => "images",
             }
           ],
         },
         "image" => {
-          "render_value" => ->(block) {
-            "<img src=\"#{block[:image][:url]}\" />"
+          "render_value" => ->(item) {
+            "<img src=\"#{item[:image][:url]}\" />"
           },
         },
       })
 
       raw = { "type" => "block", "item" => "1" }
-      block = described_class.new(raw, [], [gallery("1")])
+      item = DatoDast::Nodes::Block.new(raw, [], [gallery("1")])
 
-      expect(block.render).to eq(<<~HTML.strip)
+      expect(item.render).to eq(<<~HTML.strip)
+        <div class="blue">
+        <img src="https://www.datocms-assets.com/121100/image.png" />
+        <img src="https://www.datocms-assets.com/122100/image.png" />
+        <img src="https://www.datocms-assets.com/123100/image.png" />
+        </div>
+      HTML
+    end
+
+    it "renders children for inline items" do
+      configure_inline_items({
+        "gallery" => {
+          "wrappers" => [{"tag" => "div", "css_class" => "blue"}],
+          "structure" => [
+            {
+              "type" => "items",
+              "field" => "images",
+            }
+          ],
+        },
+        "image" => {
+          "render_value" => ->(item) {
+            "<img src=\"#{item[:image][:url]}\" />"
+          },
+        },
+      })
+
+      raw = { "type" => "inlineItem", "item" => "1" }
+      item = DatoDast::Nodes::InlineItem.new(raw, [gallery("1")], [])
+
+      expect(item.render).to eq(<<~HTML.strip)
         <div class="blue">
         <img src="https://www.datocms-assets.com/121100/image.png" />
         <img src="https://www.datocms-assets.com/122100/image.png" />
@@ -249,16 +276,16 @@ RSpec.describe DatoDast::Nodes::Block do
     end
 
     it "renders using the render value method" do
-      configure({
+      configure_blocks({
         "image" => {
           "tag" => "p",
           "css_class" => "blue",
           "meta" => [{ "id" => "data-value", "value" => "1" }],
-          "render_value" => ->(block) { block[:caption] },
+          "render_value" => ->(item) { item[:caption] },
         },
       })
 
-      expect(block.render).to eq(<<~HTML.strip)
+      expect(item.render).to eq(<<~HTML.strip)
         <p class=\"blue\" data-value=\"1\">
         This is not a pipe.
         </p>
@@ -266,20 +293,20 @@ RSpec.describe DatoDast::Nodes::Block do
     end
 
     it "renders a display structure" do
-      configure({
+      configure_blocks({
         "hero_gallery" => {
           "wrappers" => [{
             "tag" => "div",
-            "css_class" => ->(block) { block[:item_type] },
+            "css_class" => ->(item) { item[:item_type] },
             "meta" => [{ "id" => "data-value", "value" => "1" }],
           }],
           "structure" => [
             {
-              "type" => "block",
+              "type" => "item",
               "field" => "hero",
             },
             {
-              "type" => "block",
+              "type" => "item",
               "field" => "gallery",
             },
           ],
@@ -290,11 +317,11 @@ RSpec.describe DatoDast::Nodes::Block do
             "css_class" => "hero-wrapper",
             "meta" => [{ "id" => "data-value", "value" => "2" }],
           }],
-          "render_value" => ->(block) {
+          "render_value" => ->(item) {
             <<~HTML.strip
-            <div style="background-image: url('#{block[:image][:url]}')">
-            <h1>#{block[:title]}</h1>
-            <h2>#{block[:subtitle]}</h2>
+            <div style="background-image: url('#{item[:image][:url]}')">
+            <h1>#{item[:title]}</h1>
+            <h2>#{item[:subtitle]}</h2>
             </div>
             HTML
           },
@@ -326,12 +353,12 @@ RSpec.describe DatoDast::Nodes::Block do
                 "css_class" => "gallery-link",
                 "meta" => [{ "id" => "data-value", "value" => "6" }],
               }],
-              "render_value" => ->(block) {
-                "<a href=\"#{block[:url]}\">#{block[:title]}</a>"
+              "render_value" => ->(item) {
+                "<a href=\"#{item[:url]}\">#{item[:title]}</a>"
               },
             },
             {
-              "type" => "blocks",
+              "type" => "items",
               "field" => "images",
               "tag" => "ul",
               "css_class" => "gallery-image-list",
@@ -345,16 +372,16 @@ RSpec.describe DatoDast::Nodes::Block do
             "css_class" => "gallery-image",
             "meta" => [{ "id" => "data-value", "value" => "8" }],
           }],
-          "render_value" => ->(block) {
-            "<img src=\"#{block[:image][:url]}\" />"
+          "render_value" => ->(item) {
+            "<img src=\"#{item[:image][:url]}\" />"
           },
         },
       })
 
       raw = { "type" => "block", "item" => "1" }
-      block = described_class.new(raw, [], [hero_gallery("1")])
+      item = DatoDast::Nodes::Block.new(raw, [], [hero_gallery("1")])
 
-      expect(block.render).to eq(<<~HTML.strip)
+      expect(item.render).to eq(<<~HTML.strip)
         <div class="hero_gallery" data-value="1">
         <div class="hero-wrapper" data-value="2">
         <div style="background-image: url('https://www.datocms-assets.com/1110/image.png')">
@@ -390,18 +417,15 @@ RSpec.describe DatoDast::Nodes::Block do
     end
   end
 
-  # describe "#render" do
-  #   it "returns the html string" do
-  #     expect(item_link.render).to eq(<<~HTML.strip)
-  #       <a href="/my-cool-page" rel="nofollow" target="_blank">
-  #       Matteo Giaccone
-  #       </a>
-  #     HTML
-  #   end
-  # end
-  def configure(block_config)
+  def configure_blocks(item_config)
     DatoDast.configure do |config|
-      config.blocks = block_config
+      config.blocks = item_config
+    end
+  end
+
+  def configure_inline_items(item_config)
+    DatoDast.configure do |config|
+      config.inline_items = item_config
     end
   end
 end
