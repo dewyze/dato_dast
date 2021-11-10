@@ -23,4 +23,13 @@ module DatoDast
   def self.reset_configuration
     @configuration = DatoDast::Configuration.new
   end
+
+  def self.structured_text(item, config = nil)
+    object = item.to_hash
+    document = object[:value]["document"]
+    links = object[:links]
+    blocks = object[:blocks]
+
+    Nodes.wrap(document, links, blocks, config).render
+  end
 end

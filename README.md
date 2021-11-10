@@ -18,31 +18,38 @@ Or install it yourself as:
 
     $ gem install dato_dast
 
-In your `config.rb` then you can do the following:
-
-```ruby
-activate :dato_dast
-```
-
-Or you can provide configuration
-
-```ruby
-activate :dato_dast do |config|
-    # See "Configuration" Below
-end
-```
-
 ## Usage
 
-The simplest use is the `structured_text` helper, which can be used in view renderer.
+The simplest use is the `DatoDast.structured_text` method, which can be used in view renderer.
 
 ```erb
 # page => DatoCMS Object
 # page.content => structured text field
-<%= structured_text(page.content) %>
+<%= DatoDast.structured_text(page.content) %>
 ```
 
+This will used the configuration object as defined below which can be put it in an initializer or a unique configuration can be provided to the structured_text method.
+
 ## Configuration Options
+
+You can configure DatoDast in something like an initializer:
+
+```ruby
+# initializers/dato_dast.rb
+
+DatoDast.configure do |config|
+  # configuration here
+end
+```
+
+Or you can create a configuration object and pass it to the structured text method.
+
+```ruby
+config = DastDast::Configuration.new
+# Set your configuration
+DatoDast.structured_text(item, config)t irequire ENV["CROW"] if ENV["CROW"]
+
+```
 
 The configuration options are:
 
