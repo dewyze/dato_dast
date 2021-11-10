@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     dato_dast (0.1.0)
+      activesupport
 
 GEM
   remote: https://rubygems.org/
@@ -48,7 +49,6 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
-  activesupport
   dato_dast!
   pry-byebug
   rake (~> 13.0)
