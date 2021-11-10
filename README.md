@@ -30,6 +30,22 @@ The simplest use is the `DatoDast.structured_text` method, which can be used in 
 
 This will used the configuration object as defined below which can be put it in an initializer or a unique configuration can be provided to the structured_text method.
 
+## Extensions
+
+Currently the only extension supported is Middleman. You can include it by installing the gem and adding this to your `config.rb`:
+
+```ruby
+activate :dato_dast
+```
+
+Or you can provide configuration
+
+```ruby
+activate :dato_dast do |config|
+    # See "Configuration Options" Below
+end
+```
+
 ## Configuration Options
 
 You can configure DatoDast in something like an initializer:
@@ -47,8 +63,7 @@ Or you can create a configuration object and pass it to the structured text meth
 ```ruby
 config = DastDast::Configuration.new
 # Set your configuration
-DatoDast.structured_text(item, config)t irequire ENV["CROW"] if ENV["CROW"]
-
+DatoDast.structured_text(item, config)
 ```
 
 The configuration options are:

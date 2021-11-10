@@ -33,3 +33,7 @@ module DatoDast
     Nodes.wrap(document, links, blocks, config).render
   end
 end
+
+if defined?(Middleman)
+  require "dato_dast/extensions/middleman"
+end
