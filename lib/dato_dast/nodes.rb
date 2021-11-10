@@ -1,4 +1,5 @@
 require "dato_dast/nodes/base"
+require "dato_dast/nodes/item"
 require "dato_dast/nodes/span"
 require "dato_dast/nodes/generic"
 require "dato_dast/nodes/block"

@@ -27,7 +27,7 @@ module DatoDast
       Marks::UNDERLINE => { "tag" => "u" },
     }.freeze
 
-    BLOCK_RENDER_KEYS = ["node", "render_value", "structure"].freeze
+    ITEM_RENDER_KEYS = ["node", "render_value", "structure"].freeze
 
     attr_reader :blocks, :host, :marks, :types
     attr_accessor :highlight, :item_links, :smart_links
@@ -53,7 +53,7 @@ module DatoDast
     end
 
     def blocks=(new_blocks)
-      validate_blocks_configuration(new_blocks)
+      validate_items_configuration(new_blocks, "blocks")
 
       @blocks = new_blocks
     end
@@ -78,17 +78,17 @@ module DatoDast
 
     private
 
-    def validate_blocks_configuration(blocks_config)
-      invalid_blocks = []
+    def validate_items_configuration(items_config, type)
+      invalid_items = []
 
-      blocks_config.each do |block, block_config|
-        next if block_config.is_a?(Proc)
+      items_config.each do |item, item_config|
+        next if item_config.is_a?(Proc)
 
-        intersection = block_config.keys & BLOCK_RENDER_KEYS
-        invalid_blocks << block unless intersection.length == 1
+        intersection = item_config.keys & ITEM_RENDER_KEYS
+        invalid_items << "#{type}->#{item}" unless intersection.length == 1
       end
 
-      raise Errors::InvalidBlocksConfiguration.new(invalid_blocks) if invalid_blocks.present?
+      raise Errors::InvalidItemsConfiguration.new(invalid_items) if invalid_items.present?
     end
 
     def validate_types(types_config)

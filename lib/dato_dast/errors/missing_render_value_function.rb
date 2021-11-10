@@ -4,7 +4,7 @@ module DatoDast
       MESSAGE = <<~MSG.strip
         A structure type of 'value' requires a render value function.
 
-        The following block configuration is invalid:
+        The following configuration is invalid:
       MSG
 
       def initialize(item_type)

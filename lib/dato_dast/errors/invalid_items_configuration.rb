@@ -1,13 +1,13 @@
 module DatoDast
   module Errors
-    class InvalidBlocksConfiguration < StandardError
+    class InvalidItemsConfiguration < StandardError
       MESSAGE = <<~MSG.strip
-        A block configuration requires exactly one of the following keys:
+        An item configuration requires exactly one of the following keys:
         - "node"
         - "render_value"
         - "structure"
 
-        The following block configurations are invalid:
+        The following configurations are invalid:
       MSG
 
       def initialize(keys)

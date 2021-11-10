@@ -177,13 +177,10 @@ TYPE_CONFIG = {
   "blockquote" => { "tag" => "blockquote", "node" => Nodes::AttributedQuote },
   "code" => { "tag" => "code", "node" => Nodes::Code, "wrappers" => ["pre"] },
   "generic" => { "node" => Nodes::Generic },
-  "heading" => { "tag" => "h#", "node" => Nodes::Heading },
+  "heading" => { "tag" => ->(node) { "h#{node.level}" }, "node" => Nodes::Heading },
   "itemLink" => { "tag" => "a", "node" => Nodes::ItemLink, "url_key" => :slug },
   "link" => { "tag" => "a", "node" => Nodes::Link },
-  "list" => {
-    "bulleted" => { "tag" => "ul", "node" => Nodes::List },
-    "numbered" => { "tag" => "ol", "node" => Nodes::List },
-  },
+  "list" => { "tag" => ->(node) { node.style == "bulleted" ? "ul" : "ol" }, "node" => Nodes::List },
   "listItem" => { "tag" => "li", "node" => Nodes::ListItem },
   "paragraph" => { "tag" => "p", "node" => Nodes::Paragraph },
   "root" => { "tag" => "div", "node" => Nodes::Root },
@@ -196,7 +193,7 @@ Each type configuration takes the following keys:
 - `tag`: The default html tag to use. `nil` can be used to not use a key. Additionally you can provide a lambda that takes the Node object.
 - `node`: This represents the Node object used for rendering. See [Nodes](#nodes) for more details.
 - `css_class`: This is a string that is used in the `class=""` attribute of the tag. Additionally you can provide a lambda that takes the Node object.
-- [ ] `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
+- `meta`: This is an array of hashes matching the dast meta structure. E.g. Found in the [`link`](https://www.datocms.com/docs/structured-text/dast#link) node. Additionally you can provide a lamdbda that takes the Node object.
   - The structure is `{ "id" => "data-value", "value" => "1"}` renders as `<div data-value="1">`
 - `wrappers`: This represents additional wrappers use to surrounded the given node type. See [Wrappers](#wrappers) for more details.
 
@@ -960,7 +957,7 @@ DatoDast.configure do |config|
           "value" => "1",
         }],
       },
-      "structure" => []
+      "structure" => [
         {
           "type" => "block",
           "field" => "photo",
@@ -1042,7 +1039,7 @@ DatoDast.configure do |config|
       },
       "structure" => []
         {
-          "type" => "block",
+          "type" => "blocks",
           "field" => "gallery",
           "tag" => "div",
           "css_class" => "gallery",
@@ -1083,4 +1080,4 @@ Would render the following html:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[dewyze]/dato_dast.
+Bug reports and pull requests are welcome on GitHub at https://github.com/dewyze/dato_dast.

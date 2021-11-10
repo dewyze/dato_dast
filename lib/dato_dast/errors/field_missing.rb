@@ -1,10 +1,10 @@
 module DatoDast
   module Errors
-    class BlockFieldMissing < StandardError
+    class FieldMissing < StandardError
       MESSAGE = <<~MSG.strip
         A structure type of 'field' requires the block to have the specified field.
 
-        The following block configuration is invalid:
+        The following configuration is invalid:
       MSG
 
       def initialize(item_type)

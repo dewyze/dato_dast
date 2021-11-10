@@ -150,7 +150,7 @@ RSpec.describe DatoDast::Nodes::Block do
 
       block = described_class.new(raw, [], [gallery])
 
-      expect { block.children }.to raise_error(DatoDast::Errors::InvalidBlockStructureType)
+      expect { block.children }.to raise_error(DatoDast::Errors::InvalidStructureType, /block->gallery/)
     end
   end
 
@@ -191,7 +191,7 @@ RSpec.describe DatoDast::Nodes::Block do
         "image" => { "node" => InvalidNode },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::BlockNodeMissingRenderFunction)
+      expect { block.render }.to raise_error(DatoDast::Errors::MissingRenderFunction, /block->image/)
     end
 
     it "raises an block field missing error if the structure type is field" do
@@ -203,7 +203,7 @@ RSpec.describe DatoDast::Nodes::Block do
         },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::BlockFieldMissing)
+      expect { block.render }.to raise_error(DatoDast::Errors::FieldMissing, /block->image/)
     end
 
     it "raises an missing render value method error if the structure type is value" do
@@ -215,7 +215,7 @@ RSpec.describe DatoDast::Nodes::Block do
         },
       })
 
-      expect { block.render }.to raise_error(DatoDast::Errors::MissingRenderValueFunction)
+      expect { block.render }.to raise_error(DatoDast::Errors::MissingRenderValueFunction, /block->image/)
     end
 
     it "renders children" do

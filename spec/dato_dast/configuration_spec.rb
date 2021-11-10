@@ -175,7 +175,7 @@ RSpec.describe DatoDast::Configuration do
     it "raises the error if no key is present" do
       expect do
         config.blocks = { "image" => {} }
-      end.to raise_error(DatoDast::Errors::InvalidBlocksConfiguration)
+      end.to raise_error(DatoDast::Errors::InvalidItemsConfiguration, /blocks->image/)
     end
 
     it "raises the error if two or more keys are present" do
@@ -183,7 +183,7 @@ RSpec.describe DatoDast::Configuration do
         config.blocks = {
           "image" => { "render_value" => "", "node" => "" },
         }
-      end.to raise_error(DatoDast::Errors::InvalidBlocksConfiguration)
+      end.to raise_error(DatoDast::Errors::InvalidItemsConfiguration, /blocks->image/)
     end
   end
 
