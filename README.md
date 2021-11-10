@@ -159,6 +159,10 @@ This would use the `<i>` tag instead of `<emphasis>` and wrap that `<i>` tag wit
 
 </details>
 
+### `config.blocks`
+
+The blocks configuraiton is a hash with a block `item_type` key and the block configuration. See the [Blocks](#blocks) section for details on configuration blocks.
+
 ### `config.types`
 
 <details>
