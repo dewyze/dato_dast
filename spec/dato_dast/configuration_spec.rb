@@ -160,6 +160,12 @@ RSpec.describe DatoDast::Configuration do
       expect(config.host).to be_nil
     end
 
+    it "does not set a nil host" do
+      expect do
+        config.host = nil
+      end.to_not raise_error
+    end
+
     it "accepts a string and returns a host" do
       config.host = "google.com"
 

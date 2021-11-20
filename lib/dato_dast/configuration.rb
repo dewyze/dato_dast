@@ -45,6 +45,8 @@ module DatoDast
     end
 
     def host=(new_host)
+      return unless new_host
+
       uri = URI(new_host)
 
       if uri.host.present?
