@@ -43,10 +43,14 @@ module DatoDast
         smart_links? && !local_url
       end
 
+      def phone_number?
+        url =~ /^tel:/
+      end
+
       def local_url
         return @local_url if defined?(@local_url)
 
-        @local_url = if uri.host.nil? && !uri.is_a?(URI::MailTo)
+        @local_url = if uri.host.nil? && !uri.is_a?(URI::MailTo) && !phone_number?
           "/#{uri.to_s}"
         elsif smart_links? && uri.host == config.host
           uri.path

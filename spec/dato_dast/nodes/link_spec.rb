@@ -97,6 +97,13 @@ RSpec.describe DatoDast::Nodes::Link do
 
         expect(link.path).to eq("mailto:user@example.com")
       end
+
+      it "returns a telephone link for a telephone address with 'tel:'" do
+        raw["url"] = "tel:1-234-567-8910"
+        link = described_class.new(raw)
+
+        expect(link.path).to eq("tel:1-234-567-8910")
+      end
     end
 
     context "with smart links without a host value" do
