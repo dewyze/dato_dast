@@ -11,6 +11,7 @@ module DatoDast
       option :marks, {}, "Configuration hash for a given mark"
       option :smart_links, true, "Open Link items in new windows and ItemLinks in the same window"
       option :types, {}, "Configuration hash for a given block node type"
+      option :wrappers, {}, "Wrappers for types without changing specific implementation"
 
       def after_configuration
         return if app.mode?(:config)
@@ -24,6 +25,11 @@ module DatoDast
           config.marks = options[:marks]
           config.smart_links = options[:smart_links]
           config.types = options[:types]
+          options[:wrappers].each do |type, wrappers|
+            wrappers.each do |wrapper|
+              config.add_wrapper(type, wrapper)
+            end
+          end
         end
       end
 
