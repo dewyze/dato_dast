@@ -66,6 +66,31 @@ config = DastDast::Configuration.new
 DatoDast.structured_text(item, config)
 ```
 
+### `DatoDast.configuration.duplicate`
+
+If you want to temporarily override the existing configuration, you can
+duplicate the current configuration and this method will return a configuration
+object you can pass to `DatoDast.structured_text(text, configuration)` as the
+configuration.
+
+An example below:
+
+```ruby
+DatoDast.configure do |config|
+  config.host = "https://example.com"
+end
+
+new_config = DatoDast.congfiguration.duplicate do |config|
+  config.highlight = false
+end
+
+DatoDast.configuration.host # => example.com
+DatoDast.configuration.highlight # => true
+
+new_config.host # => example.com
+new_config.highlight # => false
+```
+
 The configuration options are:
 
 ### `config.highlight`, default: `true`

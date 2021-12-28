@@ -1,3 +1,12 @@
+## [0.2.0] - 2021-12-28
+
+Features:
+- Added `duplicate` for the configuration
+- Add wrappers option to middleman extension
+
+Fixes
+- Don't load extension twice in middleman
+
 ## [0.1.1] - 2021-11-20
 
 Fixes
