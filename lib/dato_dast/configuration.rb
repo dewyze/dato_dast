@@ -44,6 +44,18 @@ module DatoDast
       @types = TYPE_CONFIG.transform_values { |value| value.dup }
     end
 
+    def duplicate(&blk)
+      config = DatoDast::Configuration.new
+
+      %w(blocks inline_items highlight host item_links marks smart_links types).each do |method|
+        config.send("#{method}=", send(method))
+      end
+
+      yield config if blk
+
+      config
+    end
+
     def host=(new_host)
       return unless new_host
 
@@ -59,13 +71,13 @@ module DatoDast
     def blocks=(new_blocks)
       validate_items_configuration(new_blocks, "blocks")
 
-      @blocks = new_blocks
+      @blocks.merge!(new_blocks)
     end
 
     def inline_items=(new_inline_items)
       validate_items_configuration(new_inline_items, "inline_items")
 
-      @inline_items = new_inline_items
+      @inline_items.merge!(new_inline_items)
     end
 
     def marks=(new_marks)

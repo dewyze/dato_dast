@@ -64,6 +64,29 @@ RSpec.describe DatoDast::Configuration do
     end
   end
 
+  describe "#duplicate" do
+    it "returns a duplicated configuration" do
+      DatoDast.configure do |config|
+        config.host = "https://example.com"
+      end
+
+      new_config = DatoDast.configuration.duplicate do |config|
+        config.highlight = false
+      end
+
+      expect(new_config.host).to eq("example.com")
+      expect(new_config.highlight).to be false
+    end
+
+    it "does not change the original configuration" do
+      DatoDast.configuration.duplicate do |config|
+        config.host = "https://example.com"
+      end
+
+      expect(DatoDast.configuration.host).to be_nil
+    end
+  end
+
   describe "#add_wrapper" do
     it "adds a wrapper for a given type" do
       config.add_wrapper("span", {
