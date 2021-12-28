@@ -13,6 +13,8 @@ module DatoDast
       option :types, {}, "Configuration hash for a given block node type"
 
       def after_configuration
+        return if app.mode?(:config)
+
         DatoDast.configure do |config|
           config.blocks = options[:blocks]
           config.highlight = options[:highlight]
@@ -31,7 +33,7 @@ module DatoDast
         end
       end
     end
-
-    ::Middleman::Extensions.register(:dato_dast, DatoDast::Extensions::Middleman)
   end
 end
+
+::Middleman::Extensions.register(:dato_dast, DatoDast::Extensions::Middleman)
