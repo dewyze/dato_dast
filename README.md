@@ -760,7 +760,7 @@ Blocks and Inline Items take the exact type of configuration, just under a diffe
 ```ruby
 config = {...}
 DatoDast.configure do |config|
-  config.block = config
+  config.blocks = config
   config.inline_items = config
 end
 ```
